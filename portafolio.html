@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portafolio — Taruma Arquitectos</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#F8F6F2;--bg2:#EFECE5;--bg3:#E8E4DC;
+  --carbon:#1A1A1A;--graphite:#2D2D2D;--stone:#6B6560;
+  --terra:#C4876A;--terra-light:#D9A88A;--terra-dark:#A36A4E;
+  --white:#FFFFFF;--border:rgba(26,26,26,0.1);
+  --ease:cubic-bezier(0.25,0.46,0.45,0.94)
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--carbon);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.1rem 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(248,246,242,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{height:38px;width:auto;object-fit:contain;mix-blend-mode:multiply;filter:contrast(1.1)}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;letter-spacing:0.14em;color:var(--carbon);text-transform:uppercase}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-size:0.72rem;letter-spacing:0.12em;color:var(--stone);text-decoration:none;text-transform:uppercase;transition:color 0.3s}
+.nav-links a:hover{color:var(--carbon)}
+.nav-links a.active{color:var(--carbon);border-bottom:1px solid var(--terra);padding-bottom:2px}
+.nav-cta{font-size:0.72rem;letter-spacing:0.12em;padding:0.6rem 1.5rem;border:1px solid var(--carbon);color:var(--carbon);background:transparent;text-decoration:none;text-transform:uppercase;transition:all 0.3s}
+.nav-cta:hover{background:var(--carbon);color:var(--white)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.hamburger span{display:block;width:22px;height:1px;background:var(--carbon)}
+.mob-menu{display:none;position:fixed;inset:0;background:var(--bg);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem}
+.mob-menu.open{display:flex}
+.mob-menu a{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--carbon);text-decoration:none;letter-spacing:0.05em;transition:color 0.3s}
+.mob-menu a:hover{color:var(--terra)}
+.mob-close{position:absolute;top:1.8rem;right:5%;font-size:0.75rem;letter-spacing:0.1em;color:var(--stone);cursor:pointer;background:none;border:none;text-transform:uppercase}
+
+/* PAGE HERO */
+.page-hero{padding:12rem 5% 7rem;background:var(--white);position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:flex-end}
+.breadcrumb{font-size:0.65rem;letter-spacing:0.2em;color:var(--stone);text-transform:uppercase;margin-bottom:2rem;display:flex;align-items:center;gap:0.8rem}
+.breadcrumb a{color:var(--stone);text-decoration:none;transition:color 0.3s}
+.breadcrumb a:hover{color:var(--terra)}
+.breadcrumb span{color:var(--terra)}
+.page-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,6vw,5rem);font-weight:300;line-height:1.05;color:var(--carbon)}
+.page-hero h1 em{font-style:italic;color:var(--terra)}
+.hero-right-text{padding-bottom:0.5rem}
+.hero-right-text p{font-size:0.92rem;line-height:1.9;color:var(--stone);font-weight:300;margin-bottom:2rem}
+.hero-counts{display:flex;gap:3rem}
+
+.hc-n{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:var(--carbon);line-height:1}
+.hc-l{font-size:0.62rem;letter-spacing:0.15em;color:var(--stone);text-transform:uppercase;margin-top:4px}
+
+/* FILTERS */
+.filters-bar{background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;display:flex;align-items:center;justify-content:space-between;position:sticky;top:62px;z-index:50}
+.filters{display:flex;gap:0}
+.filter-btn{padding:1.2rem 1.8rem;font-size:0.7rem;letter-spacing:0.12em;color:var(--stone);text-transform:uppercase;background:transparent;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.3s}
+.filter-btn:hover{color:var(--carbon)}
+.filter-btn.active{color:var(--carbon);border-bottom-color:var(--terra)}
+.sort-wrap{display:flex;align-items:center;gap:0.8rem}
+.sort-label{font-size:0.68rem;letter-spacing:0.12em;color:var(--stone);text-transform:uppercase}
+.sort-select{font-size:0.7rem;color:var(--carbon);background:transparent;border:none;outline:none;cursor:pointer;letter-spacing:0.08em;font-family:'Inter',sans-serif}
+
+/* GRID */
+.portfolio-wrap{padding:4rem 5% 7rem;background:var(--bg)}
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.p-item{position:relative;overflow:hidden;cursor:pointer;background:var(--bg3)}
+.p-item.hidden{display:none}
+.p-item.featured{grid-column:span 2}
+.p-img{width:100%;height:100%;object-fit:cover;transition:transform 0.7s var(--ease),filter 0.5s;display:block}
+.p-item:not(.featured) .p-img{height:340px}
+.p-item.featured .p-img{height:560px}
+.p-item:hover .p-img{transform:scale(1.04);filter:contrast(1.05)}
+.p-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,26,26,0.82) 0%,rgba(26,26,26,0.1) 50%,transparent 100%);opacity:0;transition:opacity 0.4s;display:flex;flex-direction:column;justify-content:flex-end;padding:2rem}
+.p-item:hover .p-overlay{opacity:1}
+.p-cat{font-size:0.62rem;letter-spacing:0.2em;color:var(--terra-light);text-transform:uppercase;margin-bottom:0.4rem}
+.p-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--white);font-weight:300;margin-bottom:0.6rem}
+.p-meta{font-size:0.72rem;color:rgba(255,255,255,0.5);display:flex;gap:1.5rem}
+.p-tag-badge{position:absolute;top:1.2rem;left:1.2rem;background:var(--white);padding:0.3rem 0.8rem;font-size:0.6rem;letter-spacing:0.14em;color:var(--carbon);text-transform:uppercase;opacity:0;transition:opacity 0.3s}
+.p-item:hover .p-tag-badge{opacity:1}
+.p-expand{position:absolute;top:1.2rem;right:1.2rem;width:36px;height:36px;border:1px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;color:var(--white);font-size:1rem;opacity:0;transition:opacity 0.3s,background 0.3s}
+.p-item:hover .p-expand{opacity:1}
+.p-expand:hover{background:var(--terra);border-color:var(--terra)}
+
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(26,26,26,0.92);align-items:center;justify-content:center;padding:2rem}
+.modal.open{display:flex}
+.modal-inner{background:var(--white);max-width:1000px;width:100%;max-height:90vh;overflow-y:auto;display:grid;grid-template-columns:1.2fr 1fr}
+.modal-img{overflow:hidden}
+.modal-img img{width:100%;height:100%;object-fit:cover;display:block}
+.modal-body{padding:3rem}
+.modal-close{position:absolute;top:1.5rem;right:1.5rem;width:40px;height:40px;background:var(--white);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--stone);transition:background 0.3s}
+.modal-close:hover{background:var(--bg2)}
+.modal-cat{font-size:0.65rem;letter-spacing:0.2em;color:var(--terra);text-transform:uppercase;margin-bottom:0.8rem}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--carbon);margin-bottom:0.5rem;line-height:1.1}
+.modal-divider{width:30px;height:1px;background:var(--terra);margin:1.2rem 0}
+.modal-desc{font-size:0.85rem;line-height:1.85;color:var(--stone);font-weight:300;margin-bottom:2rem}
+.modal-specs{display:flex;flex-direction:column;gap:0}
+.modal-spec{display:flex;justify-content:space-between;padding:0.7rem 0;border-bottom:1px solid var(--border);font-size:0.78rem}
+.modal-spec-label{color:var(--stone);font-weight:300}
+.modal-spec-val{color:var(--carbon);font-weight:500}
+.modal-cta{display:inline-block;margin-top:2rem;padding:0.85rem 2rem;background:var(--carbon);color:var(--white);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;transition:background 0.3s}
+.modal-cta:hover{background:var(--graphite)}
+
+/* EMPTY STATE */
+.empty-state{display:none;grid-column:1/-1;text-align:center;padding:5rem 2rem}
+.empty-state.show{display:block}
+.empty-state p{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:var(--stone)}
+
+/* CTA */
+.cta-strip{background:var(--terra);padding:6rem 5%;text-align:center}
+.cta-strip h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:300;color:var(--white);margin-bottom:0.6rem}
+.cta-strip p{font-size:0.88rem;color:rgba(255,255,255,0.75);margin-bottom:2.5rem;font-weight:300}
+.btn-white{padding:0.9rem 2.5rem;background:var(--white);color:var(--terra-dark);border:none;font-size:0.73rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.3s;font-weight:500}
+.btn-white:hover{background:var(--bg)}
+
+/* FOOTER */
+footer{background:var(--graphite);color:rgba(255,255,255,0.55);padding:5rem 5% 2.5rem}
+.footer-top{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem}
+.f-brand .logo-text{color:var(--white);font-size:1.3rem;display:block;margin-bottom:1rem}
+.f-brand p{font-size:0.8rem;line-height:1.85;font-weight:300;max-width:260px}
+.f-col h4{font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--terra-light);margin-bottom:1.5rem}
+.f-col ul{list-style:none;display:flex;flex-direction:column;gap:0.65rem}
+.f-col ul a{font-size:0.8rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.3s}
+.f-col ul a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:2rem;display:flex;justify-content:space-between}
+.footer-bottom p{font-size:0.72rem}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s var(--ease),transform 0.8s var(--ease)}
+.reveal.visible{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .nav-links,.nav-cta{display:none}
+  .hamburger{display:flex}
+  .page-hero{grid-template-columns:1fr;gap:2rem;padding:10rem 5% 4rem}
+  .filters-bar{flex-direction:column;align-items:flex-start;gap:0;top:60px}
+  .filters{overflow-x:auto;width:100%;padding-bottom:2px}
+  .sort-wrap{padding:0.8rem 0;border-top:1px solid var(--border);width:100%}
+  .portfolio-grid{grid-template-columns:1fr 1fr}
+  .p-item.featured{grid-column:span 2}
+  .modal-inner{grid-template-columns:1fr;max-height:95vh}
+  .modal-img{height:280px}
+  .footer-top{grid-template-columns:1fr 1fr;gap:2.5rem}
+}
+@media(max-width:600px){
+  .portfolio-grid{grid-template-columns:1fr}
+  .p-item.featured{grid-column:span 1}
+  .p-item.featured .p-img{height:300px}
+  .p-item:not(.featured) .p-img{height:260px}
+  .filters{gap:0}
+  .filter-btn{padding:1rem 1rem;font-size:0.65rem}
+  .footer-top{grid-template-columns:1fr}
+  .hero-counts{gap:2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <span class="logo-text">Taruma Arquitectos</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="nosotros.html">Nosotros</a></li>
+    <li><a href="servicios.html">Servicios</a></li>
+    <li><a href="portafolio.html" class="active">Portafolio</a></li>
+    <li><a href="procesos.html">Procesos</a></li>
+    <li><a href="galeria.html">Galería</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <a href="cotizaciones.html" class="nav-cta">Cotizar</a>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <button class="mob-close" onclick="toggleMenu()">✕ Cerrar</button>
+  <a href="nosotros.html" onclick="toggleMenu()">Nosotros</a>
+  <a href="servicios.html" onclick="toggleMenu()">Servicios</a>
+  <a href="portafolio.html" onclick="toggleMenu()">Portafolio</a>
+  <a href="procesos.html" onclick="toggleMenu()">Procesos</a>
+  <a href="galeria.html" onclick="toggleMenu()">Galería</a>
+  <a href="blog.html" onclick="toggleMenu()">Blog</a>
+  <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
+  <a href="cotizaciones.html" onclick="toggleMenu()">Cotizar</a>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div>
+    <div class="breadcrumb"><a href="index.html">Inicio</a> › <span>Portafolio</span></div>
+    <h1>Nuestro <em>portafolio</em></h1>
+  </div>
+  <div class="hero-right-text">
+    <p>Cada proyecto es una historia de colaboración, creatividad y rigor técnico. Explorá nuestra colección de obras residenciales, comerciales, turísticas y urbanas.</p>
+    <div class="hero-counts">
+      <div class="hc-item"><div class="hc-n">50+</div><div class="hc-l">Proyectos</div></div>
+      <div class="hc-item"><div class="hc-n">4</div><div class="hc-l">Categorías</div></div>
+      <div class="hc-item"><div class="hc-n">HN</div><div class="hc-l">Honduras</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters-bar">
+  <div class="filters">
+    <button class="filter-btn active" onclick="filter('all',this)">Todos</button>
+    <button class="filter-btn" onclick="filter('residencial',this)">Residencial</button>
+    <button class="filter-btn" onclick="filter('comercial',this)">Comercial</button>
+    <button class="filter-btn" onclick="filter('turistico',this)">Turístico</button>
+    <button class="filter-btn" onclick="filter('urbano',this)">Urbano</button>
+  </div>
+  <div class="sort-wrap">
+    <span class="sort-label">Ordenar:</span>
+    <select class="sort-select" onchange="sortItems(this.value)">
+      <option value="default">Destacados</option>
+      <option value="az">A → Z</option>
+    </select>
+  </div>
+</div>
+
+<!-- PORTFOLIO GRID -->
+<div class="portfolio-wrap">
+  <div class="portfolio-grid" id="grid">
+
+    <div class="p-item featured" data-cat="comercial" data-name="Plaza Serrano" onclick="openModal(this)">
+      <img class="p-img" src="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto1.jpg" alt="Plaza Serrano" onerror="this.src='https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=80'">
+      <div class="p-overlay">
+        <p class="p-cat">Comercial</p>
+        <p class="p-name">Plaza Serrano</p>
+        <div class="p-meta"><span>Tegucigalpa</span><span>2025</span><span>1,200 m²</span></div>
+      </div>
+      <span class="p-tag-badge">Destacado</span>
+      <div class="p-expand">+</div>
+      <div class="p-data" style="display:none" data-img="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto1.jpg" data-fallback="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=80" data-cat="Comercial" data-title="Plaza Serrano" data-loc="Tegucigalpa, Honduras" data-year="2025" data-area="1,200 m²" data-client="Cliente privado" data-status="Completado" data-desc="Plaza Serrano es un complejo comercial de uso mixto diseñado para revitalizar su entorno urbano. El proyecto integra locales comerciales, espacios de coworking y áreas públicas en un lenguaje arquitectónico contemporáneo que dialoga con el contexto local."></div>
+    </div>
+
+    <div class="p-item" data-cat="residencial" data-name="Complejo Habitacional Lipidario" onclick="openModal(this)">
+      <img class="p-img" src="http://tommyvega.me/taruma-arquitectos/assets/img/Complejo Habitacional Lipidario2.png" alt="Complejo Habitacional" onerror="this.src='https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=700&q=80'">
+      <div class="p-overlay">
+        <p class="p-cat">Residencial</p>
+        <p class="p-name">Complejo Habitacional Lipidario</p>
+        <div class="p-meta"><span>Honduras</span><span>2025</span></div>
+      </div>
+      <div class="p-expand">+</div>
+      <div class="p-data" style="display:none" data-img="http://tommyvega.me/taruma-arquitectos/assets/img/Complejo Habitacional Lipidario2.png" data-fallback="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=700&q=80" data-cat="Residencial" data-title="Complejo Habitacional Lipidario" data-loc="Honduras" data-year="2025" data-area="3,400 m²" data-client="Promotora Lipidario" data-status="Completado" data-desc="Conjunto residencial de alta densidad que prioriza la calidad de vida de sus habitantes a través de espacios comunes generosos, vegetación integrada y una arquitectura que favorece la ventilación natural y la luz."></div>
+    </div>
+
+    <div class="p-item" data-cat="turistico" data-name="Cabañas The Rubra" onclick="openModal(this)">
+      <img class="p-img" src="http://tommyvega.me/taruma-arquitectos/assets/img/Cabañas The Rubra4.png" alt="Cabañas The Rubra" onerror="this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=700&q=80'">
+      <div class="p-overlay">
+        <p class="p-cat">Turístico</p>
+        <p class="p-name">Cabañas The Rubra</p>
+        <div class="p-meta"><span>Honduras</span><span>2025</span></div>
+      </div>
+      <div class="p-expand">+</div>
+      <div class="p-data" style="display:none" data-img="http://tommyvega.me/taruma-arquitectos/assets/img/Cabañas The Rubra4.png" data-fallback="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=700&q=80" data-cat="Turístico" data-title="Cabañas The Rubra" data-loc="Honduras" data-year="2025" data-area="800 m²" data-client="The Rubra S.A." data-status="Completado" data-desc="Complejo de cabañas de montaña diseñadas para integrarse con el entorno natural. La arquitectura emplea materiales locales y técnicas constructivas que minimizan el impacto ambiental, creando una experiencia auténtica de conexión con la naturaleza."></div>
+    </div>
+
+    <div class="p-item" data-cat="urbano" data-name="Complejo Deportivo" onclick="openModal(this)">
+      <img class="p-img" src="http://tommyvega.me/taruma-arquitectos/assets/img/Complejo Deportivo1.png" alt="Complejo Deportivo" onerror="this.src='https://images.unsplash.com/photo-1505664194779-8beaceb93de5?w=700&q=80'">
+      <div class="p-overlay">
+        <p class="p-cat">Urbano</p>
+        <p class="p-name">Complejo Deportivo</p>
+        <div class="p-meta"><span>Tegucigalpa</span><span>2025</span></div>
+      </div>
+      <div class="p-expand">+</div>
+      <div class="p-data" style="display:none" data-img="http://tommyvega.me/taruma-arquitectos/assets/img/Complejo Deportivo1.png" data-fallback="https://images.unsplash.com/photo-1505664194779-8beaceb93de5?w=700&q=80" data-cat="Urbano" data-title="Complejo Deportivo" data-loc="Tegucigalpa, Honduras" data-year="2025" data-area="5,600 m²" data-client="Municipalidad" data-status="En desarrollo" data-desc="Infraestructura deportiva pública diseñada para fomentar el deporte y la convivencia comunitaria. El proyecto integra canchas multiusos, zonas de ejercicio al aire libre, vestuarios y áreas de descanso bajo un diseño moderno y accesible."></div>
+    </div>
+
+    <div class="p-item featured" data-cat="turistico" data-name="Complejo Turístico Colonial" onclick="openModal(this)">
+      <img class="p-img" src="http://tommyvega.me/taruma-arquitectos/assets/img/Complejo Turistico Colonial1.png" alt="Complejo Turístico Colonial" onerror="this.src='https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=900&q=80'">
+      <div class="p-overlay">
+        <p class="p-cat">Turístico</p>
+        <p class="p-name">Complejo Turístico Colonial</p>
+        <div class="p-meta"><span>Honduras</span><span>2025</span><span>2,800 m²</span></div>
+      </div>
+      <span class="p-tag-badge">Destacado</span>
+      <div class="p-expand">+</div>
+      <div class="p-data" style="display:none" data-img="http://tommyvega.me/taruma-arquitectos/assets/img/Complejo Turistico Colonial1.png" data-fallback="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=900&q=80" data-cat="Turístico" data-title="Complejo Turístico Colonial" data-loc="Honduras" data-year="2025" data-area="2,800 m²" data-client="Inversiones Coloniales" data-status="Completado" data-desc="Hotel boutique de estilo colonial contemporáneo que fusiona la arquitectura vernácula hondureña con el confort moderno. El proyecto recupera elementos de la arquitectura colonial centroamericana reinterpretados con materiales y técnicas actuales."></div>
+    </div>
+
+    <div class="p-item" data-cat="residencial" data-name="Residencia Privada Norte" onclick="openModal(this)">
+      <img class="p-img" src="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto2.jpg" alt="Residencia Privada" onerror="this.src='https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=700&q=80'">
+      <div class="p-overlay">
+        <p class="p-cat">Residencial</p>
+        <p class="p-name">Residencia Privada Norte</p>
+        <div class="p-meta"><span>Tegucigalpa</span><span>2025</span></div>
+      </div>
+      <div class="p-expand">+</div>
+      <div class="p-data" style="display:none" data-img="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto2.jpg" data-fallback="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=700&q=80" data-cat="Residencial" data-title="Residencia Privada Norte" data-loc="Tegucigalpa, Honduras" data-year="2025" data-area="420 m²" data-client="Familia privada" data-status="Completado" data-desc="Residencia unifamiliar de diseño contemporáneo que privilegia la relación interior-exterior. Amplios ventanales, terrazas escalonadas y un jardín integrado crean un hogar en armonía con su entorno natural."></div>
+    </div>
+
+    <div class="p-item" data-cat="comercial" data-name="Cafetería Contemporánea" onclick="openModal(this)">
+      <img class="p-img" src="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto3.jpg" alt="Cafetería" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=700&q=80'">
+      <div class="p-overlay">
+        <p class="p-cat">Comercial</p>
+        <p class="p-name">Cafetería Contemporánea</p>
+        <div class="p-meta"><span>Tegucigalpa</span><span>2025</span></div>
+      </div>
+      <div class="p-expand">+</div>
+      <div class="p-data" style="display:none" data-img="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto3.jpg" data-fallback="https://images.unsplash.com/photo-1497366216548-37526070297c?w=700&q=80" data-cat="Comercial" data-title="Cafetería Contemporánea" data-loc="Tegucigalpa, Honduras" data-year="2025" data-area="180 m²" data-client="Cliente privado" data-status="Completado" data-desc="Diseño de interiores y remodelación de local gastronómico con identidad visual sólida. El proyecto integra materiales naturales, iluminación cálida y mobiliario a medida para crear un ambiente acogedor y diferenciado."></div>
+    </div>
+
+    <div class="p-item" data-cat="urbano" data-name="Parque Urbano Central" onclick="openModal(this)">
+      <img class="p-img" src="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto1.jpg" alt="Parque Urbano" onerror="this.src='https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=700&q=80'">
+      <div class="p-overlay">
+        <p class="p-cat">Urbano</p>
+        <p class="p-name">Parque Urbano Central</p>
+        <div class="p-meta"><span>Honduras</span><span>2025</span></div>
+      </div>
+      <div class="p-expand">+</div>
+      <div class="p-data" style="display:none" data-img="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto1.jpg" data-fallback="https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=700&q=80" data-cat="Urbano" data-title="Parque Urbano Central" data-loc="Honduras" data-year="2025" data-area="8,200 m²" data-client="Gobierno municipal" data-status="En desarrollo" data-desc="Renovación integral de espacio público con enfoque en biodiversidad urbana, accesibilidad universal y activación social. El proyecto incorpora especies nativas, pavimentos permeables y mobiliario urbano de diseño local."></div>
+    </div>
+
+    <div class="empty-state" id="emptyState">
+      <p>No hay proyectos en esta categoría aún.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="closeModalOutside(event)">
+  <div class="modal-inner" id="modalInner">
+    <div class="modal-img"><img id="mImg" src="" alt=""></div>
+    <div class="modal-body">
+      <p class="modal-cat" id="mCat"></p>
+      <h2 class="modal-title" id="mTitle"></h2>
+      <div class="modal-divider"></div>
+      <p class="modal-desc" id="mDesc"></p>
+      <div class="modal-specs">
+        <div class="modal-spec"><span class="modal-spec-label">Ubicación</span><span class="modal-spec-val" id="mLoc"></span></div>
+        <div class="modal-spec"><span class="modal-spec-label">Año</span><span class="modal-spec-val" id="mYear"></span></div>
+        <div class="modal-spec"><span class="modal-spec-label">Área</span><span class="modal-spec-val" id="mArea"></span></div>
+        <div class="modal-spec"><span class="modal-spec-label">Cliente</span><span class="modal-spec-val" id="mClient"></span></div>
+        <div class="modal-spec"><span class="modal-spec-label">Estado</span><span class="modal-spec-val" id="mStatus"></span></div>
+      </div>
+      <a href="cotizaciones.html" class="modal-cta">Proyectos similares →</a>
+    </div>
+  </div>
+  <button class="modal-close" onclick="closeModal()">✕</button>
+</div>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <h2 class="reveal">¿Tiene un proyecto similar en mente?</h2>
+  <p class="reveal">Cuéntenos su idea y preparamos una propuesta a medida</p>
+  <a href="cotizaciones.html" class="btn-white reveal">Solicitar cotización</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="f-brand"><span class="logo-text">Taruma Arquitectos</span><p>Diseño arquitectónico responsable y soluciones constructivas para proyectos residenciales, comerciales e institucionales en Honduras.</p></div>
+    <div class="f-col"><h4>Estudio</h4><ul><li><a href="nosotros.html">Nosotros</a></li><li><a href="servicios.html">Servicios</a></li><li><a href="procesos.html">Procesos</a></li></ul></div>
+    <div class="f-col"><h4>Proyectos</h4><ul><li><a href="portafolio.html">Portafolio</a></li><li><a href="galeria.html">Galería</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+    <div class="f-col"><h4>Contacto</h4><ul>
+      <li><a href="tel:+50498765432">+504 9876-5432</a></li>
+      <li><a href="mailto:info@taruma-arquitectos.com">info@taruma-arquitectos.com</a></li>
+      <li><a href="https://www.instagram.com/taruma.arquitectos">Instagram</a></li>
+      <li><a href="https://www.facebook.com/taruma.arquitectos">Facebook</a></li>
+      <li><a href="cotizaciones.html">Cotizaciones</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Taruma Arquitectos. Todos los derechos reservados.</p>
+    <p>Tegucigalpa, Honduras</p>
+  </div>
+</footer>
+
+<script>
+function toggleMenu(){document.getElementById('mobMenu').classList.toggle('open')}
+
+// FILTER
+function filter(cat, btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'))
+  btn.classList.add('active')
+  const items=document.querySelectorAll('.p-item[data-cat]')
+  let visible=0
+  items.forEach(item=>{
+    const show=cat==='all'||item.dataset.cat===cat
+    item.classList.toggle('hidden',!show)
+    if(show)visible++
+  })
+  document.getElementById('emptyState').classList.toggle('show',visible===0)
+}
+
+// SORT
+function sortItems(val){
+  const grid=document.getElementById('grid')
+  const items=[...grid.querySelectorAll('.p-item[data-cat]')]
+  if(val==='az'){
+    items.sort((a,b)=>a.dataset.name.localeCompare(b.dataset.name))
+  } else {
+    items.sort((a,b)=>(b.classList.contains('featured')?1:0)-(a.classList.contains('featured')?1:0))
+  }
+  items.forEach(el=>grid.insertBefore(el,document.getElementById('emptyState')))
+}
+
+// MODAL
+function openModal(el){
+  const d=el.querySelector('.p-data').dataset
+  const img=document.getElementById('mImg')
+  img.src=d.img
+  img.onerror=()=>{img.src=d.fallback}
+  document.getElementById('mCat').textContent=d.cat
+  document.getElementById('mTitle').textContent=d.title
+  document.getElementById('mDesc').textContent=d.desc
+  document.getElementById('mLoc').textContent=d.loc
+  document.getElementById('mYear').textContent=d.year
+  document.getElementById('mArea').textContent=d.area
+  document.getElementById('mClient').textContent=d.client
+  document.getElementById('mStatus').textContent=d.status
+  document.getElementById('modal').classList.add('open')
+  document.body.style.overflow='hidden'
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open')
+  document.body.style.overflow=''
+}
+function closeModalOutside(e){
+  if(e.target===document.getElementById('modal'))closeModal()
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()})
+
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.08,rootMargin:'0px 0px -40px 0px'})
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el))
+</script>
+</body>
+</html>

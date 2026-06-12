@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taruma Arquitectos</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#F8F6F2;--bg2:#EFECE5;--bg3:#E8E4DC;
+  --carbon:#1A1A1A;--graphite:#2D2D2D;--stone:#6B6560;
+  --terra:#C4876A;--terra-light:#D9A88A;--terra-dark:#A36A4E;
+  --white:#FFFFFF;--border:rgba(26,26,26,0.1);
+  --ease:cubic-bezier(0.25,0.46,0.45,0.94)
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--carbon);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.8rem 5%;display:flex;align-items:center;justify-content:space-between;transition:all 0.5s var(--ease)}
+nav.scrolled{background:rgba(248,246,242,0.96);backdrop-filter:blur(16px);padding:1.1rem 5%;border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{height:38px;width:auto;object-fit:contain;mix-blend-mode:multiply;filter:contrast(1.1)}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;letter-spacing:0.14em;color:var(--carbon);text-transform:uppercase}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-size:0.72rem;letter-spacing:0.12em;color:var(--stone);text-decoration:none;text-transform:uppercase;transition:color 0.3s}
+.nav-links a:hover{color:var(--carbon)}
+.nav-cta{font-size:0.72rem;letter-spacing:0.12em;padding:0.6rem 1.5rem;border:1px solid var(--carbon);color:var(--carbon);background:transparent;text-decoration:none;text-transform:uppercase;transition:all 0.3s}
+.nav-cta:hover{background:var(--carbon);color:var(--white)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.hamburger span{display:block;width:22px;height:1px;background:var(--carbon);transition:all 0.3s}
+.mob-menu{display:none;position:fixed;inset:0;background:var(--bg);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem}
+.mob-menu.open{display:flex}
+.mob-menu a{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--carbon);text-decoration:none;letter-spacing:0.05em;transition:color 0.3s}
+.mob-menu a:hover{color:var(--terra)}
+.mob-close{position:absolute;top:1.8rem;right:5%;font-size:0.75rem;letter-spacing:0.1em;color:var(--stone);cursor:pointer;background:none;border:none;text-transform:uppercase}
+
+/* HERO */
+.hero{height:100vh;min-height:640px;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:0 6%;background:var(--bg);position:relative;z-index:2;padding-top:5rem}
+.hero-right{position:relative;overflow:hidden}
+.hero-right img{width:100%;height:100%;object-fit:cover;filter:contrast(1.05) brightness(0.95)}
+.hero-line{width:1px;height:80px;background:var(--terra);margin-bottom:2rem;opacity:0;animation:growDown 0.6s 0.4s var(--ease) forwards}
+.hero-eyebrow{font-size:0.68rem;letter-spacing:0.25em;color:var(--terra);text-transform:uppercase;margin-bottom:1.2rem;opacity:0;animation:fadeUp 0.7s 0.6s forwards}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,5.5vw,5rem);font-weight:300;line-height:1.06;color:var(--carbon);margin-bottom:1.8rem;opacity:0;animation:fadeUp 0.7s 0.8s forwards}
+.hero h1 em{font-style:italic;color:var(--terra)}
+.hero-desc{font-size:0.88rem;line-height:1.9;color:var(--stone);max-width:380px;margin-bottom:2.5rem;font-weight:300;opacity:0;animation:fadeUp 0.7s 1s forwards}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:fadeUp 0.7s 1.2s forwards}
+.btn-solid{padding:0.9rem 2.2rem;background:var(--carbon);color:var(--white);border:none;font-size:0.73rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all 0.3s;display:inline-block}
+.btn-solid:hover{background:var(--graphite)}
+.btn-outline{padding:0.9rem 2.2rem;background:transparent;color:var(--carbon);border:1px solid var(--border);font-size:0.73rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all 0.3s;display:inline-block}
+.btn-outline:hover{border-color:var(--carbon)}
+.hero-tag{position:absolute;bottom:3rem;right:3rem;writing-mode:vertical-rl;font-size:0.65rem;letter-spacing:0.2em;color:rgba(255,255,255,0.6);text-transform:uppercase;opacity:0;animation:fadeIn 1s 1.5s forwards}
+.hero-stats{display:flex;gap:3rem;margin-top:3rem;padding-top:2.5rem;border-top:1px solid var(--border);opacity:0;animation:fadeIn 0.8s 1.4s forwards}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--carbon);line-height:1}
+.stat-l{font-size:0.62rem;letter-spacing:0.15em;color:var(--stone);text-transform:uppercase;margin-top:4px}
+
+/* SECTIONS */
+section{padding:8rem 5%}
+.s-label{font-size:0.68rem;letter-spacing:0.25em;color:var(--terra);text-transform:uppercase;margin-bottom:1rem;display:block}
+.s-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:300;color:var(--carbon);line-height:1.1}
+.s-title em{font-style:italic;color:var(--terra)}
+.divider{width:40px;height:1px;background:var(--terra);margin:1.5rem 0}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s var(--ease),transform 0.8s var(--ease)}
+.reveal.visible{opacity:1;transform:none}
+
+/* IDENTITY */
+.identity{background:var(--white);display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center}
+.identity-visual{position:relative;padding-bottom:2.5rem}
+.identity-img-main{width:80%;aspect-ratio:3/4;object-fit:cover}
+.identity-accent{position:absolute;bottom:0;right:0;width:48%;aspect-ratio:1;object-fit:cover;border:6px solid var(--white)}
+.identity-badge{position:absolute;top:2rem;left:-1rem;background:var(--carbon);color:var(--white);padding:0.6rem 1.4rem;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase}
+.identity-text p{font-size:0.9rem;line-height:1.95;color:var(--stone);font-weight:300;margin-bottom:1.2rem}
+.identity-pillars{margin-top:2.5rem;display:flex;flex-direction:column;gap:0}
+.pillar{display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:flex-start;padding:1.2rem 0;border-bottom:1px solid var(--border)}
+.pillar:last-child{border-bottom:none}
+.pillar-num{font-family:'Cormorant Garamond',serif;font-size:0.9rem;color:var(--terra);padding-top:2px}
+.pillar-name{font-size:0.78rem;font-weight:500;letter-spacing:0.08em;color:var(--carbon);text-transform:uppercase;margin-bottom:0.25rem}
+.pillar-desc{font-size:0.8rem;color:var(--stone);line-height:1.6;font-weight:300}
+
+/* SERVICES PREVIEW */
+.services-preview{background:var(--bg2)}
+.sp-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4rem}
+.sp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.sp-card{background:var(--white);padding:2.5rem 2rem;position:relative;overflow:hidden;transition:background 0.35s;cursor:default}
+.sp-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--terra);transform:scaleX(0);transform-origin:left;transition:transform 0.4s var(--ease)}
+.sp-card:hover{background:var(--bg)}
+.sp-card:hover::after{transform:scaleX(1)}
+.sp-num{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:rgba(196,135,106,0.18);line-height:1;margin-bottom:1.5rem}
+.sp-name{font-size:0.88rem;font-weight:500;letter-spacing:0.06em;color:var(--carbon);margin-bottom:0.7rem}
+.sp-desc{font-size:0.8rem;line-height:1.75;color:var(--stone);font-weight:300}
+.sp-arrow{display:inline-block;margin-top:1.2rem;font-size:0.7rem;letter-spacing:0.12em;color:var(--terra);text-transform:uppercase;text-decoration:none;transition:letter-spacing 0.3s}
+.sp-arrow:hover{letter-spacing:0.2em}
+
+/* PROJECTS PREVIEW */
+.projects-prev{background:var(--white)}
+.pp-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem}
+.pp-grid{display:grid;grid-template-columns:1.4fr 1fr;grid-template-rows:360px 260px;gap:6px}
+.pp-item{position:relative;overflow:hidden;cursor:pointer}
+.pp-item:first-child{grid-row:span 2}
+.pp-img{width:100%;height:100%;object-fit:cover;transition:transform 0.7s var(--ease),filter 0.5s}
+.pp-item:hover .pp-img{transform:scale(1.04)}
+.pp-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,26,26,0.7) 0%,transparent 55%);opacity:0;transition:opacity 0.4s;display:flex;align-items:flex-end;padding:1.8rem}
+.pp-item:hover .pp-overlay{opacity:1}
+.pp-cat{font-size:0.6rem;letter-spacing:0.2em;color:var(--terra-light);text-transform:uppercase;margin-bottom:0.3rem}
+.pp-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--white);font-weight:300}
+
+/* MARQUEE */
+.marquee-wrap{background:var(--carbon);padding:1.3rem 0;overflow:hidden}
+.marquee-track{display:flex;gap:4rem;white-space:nowrap;animation:marquee 20s linear infinite}
+.marquee-item{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;flex-shrink:0}
+.marquee-dot{color:var(--terra);margin:0 1rem}
+
+/* PHILOSOPHY */
+.philosophy{background:var(--carbon);color:var(--white);text-align:center;padding:10rem 5%}
+.philosophy .s-label{color:var(--terra)}
+.philosophy blockquote{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:300;font-style:italic;line-height:1.45;color:rgba(255,255,255,0.88);max-width:820px;margin:2rem auto}
+.philosophy cite{display:block;margin-top:2rem;font-size:0.7rem;letter-spacing:0.2em;color:rgba(255,255,255,0.3);text-transform:uppercase;font-style:normal}
+
+/* CTA */
+.cta-strip{background:var(--terra);padding:6rem 5%;text-align:center}
+.cta-strip h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:300;color:var(--white);margin-bottom:0.6rem}
+.cta-strip p{font-size:0.88rem;color:rgba(255,255,255,0.75);margin-bottom:2.5rem;font-weight:300}
+.btn-white{padding:0.9rem 2.5rem;background:var(--white);color:var(--terra-dark);border:none;font-size:0.73rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.3s;font-weight:500}
+.btn-white:hover{background:var(--bg)}
+
+/* FOOTER */
+footer{background:var(--graphite);color:rgba(255,255,255,0.55);padding:5rem 5% 2.5rem}
+.footer-top{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem}
+.f-brand .logo-text{color:var(--white);font-size:1.3rem;display:block;margin-bottom:1rem}
+.f-brand p{font-size:0.8rem;line-height:1.85;font-weight:300;max-width:260px}
+.f-col h4{font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--terra-light);margin-bottom:1.5rem}
+.f-col ul{list-style:none;display:flex;flex-direction:column;gap:0.65rem}
+.f-col ul a{font-size:0.8rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.3s}
+.f-col ul a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:2rem;display:flex;justify-content:space-between}
+.footer-bottom p{font-size:0.72rem}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes growDown{from{height:0;opacity:0}to{height:80px;opacity:1}}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .nav-links,.nav-cta{display:none}
+  .hamburger{display:flex}
+  .hero{grid-template-columns:1fr}
+  .hero-left{min-height:100vh;padding:8rem 6% 5rem}
+  .hero-right{display:none}
+  .identity{grid-template-columns:1fr;gap:3rem}
+  .identity-visual{display:none}
+  .sp-grid{grid-template-columns:1fr 1fr}
+  .pp-grid{grid-template-columns:1fr;grid-template-rows:auto}
+  .pp-item:first-child{grid-row:span 1;height:320px}
+  .pp-item{height:240px}
+  .footer-top{grid-template-columns:1fr 1fr;gap:2.5rem}
+  .sp-header,.pp-header{flex-direction:column;align-items:flex-start;gap:1.5rem}
+}
+@media(max-width:600px){
+  section{padding:5rem 5%}
+  .sp-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr}
+  .hero-stats{gap:2rem}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="nav-logo" href="index.html">
+    
+    <span class="logo-text">Taruma Arquitectos</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="nosotros.html">Nosotros</a></li>
+    <li><a href="servicios.html">Servicios</a></li>
+    <li><a href="portafolio.html">Portafolio</a></li>
+    <li><a href="procesos.html">Procesos</a></li>
+    <li><a href="galeria.html">Galería</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <a href="cotizaciones.html" class="nav-cta">Cotizar</a>
+  <div class="hamburger" id="hbg" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <button class="mob-close" onclick="toggleMenu()">✕ Cerrar</button>
+  <a href="nosotros.html" onclick="toggleMenu()">Nosotros</a>
+  <a href="servicios.html" onclick="toggleMenu()">Servicios</a>
+  <a href="portafolio.html" onclick="toggleMenu()">Portafolio</a>
+  <a href="procesos.html" onclick="toggleMenu()">Procesos</a>
+  <a href="galeria.html" onclick="toggleMenu()">Galería</a>
+  <a href="blog.html" onclick="toggleMenu()">Blog</a>
+  <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
+  <a href="cotizaciones.html" onclick="toggleMenu()">Cotizar</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-line"></div>
+    <p class="hero-eyebrow">Despacho de Arquitectura · Tegucigalpa, Honduras</p>
+    <h1>Espacios que<br><em>trascienden</em><br>el tiempo</h1>
+    <p class="hero-desc">Diseño arquitectónico, construcción y planificación urbana con un enfoque que combina rigor técnico, sensibilidad estética y compromiso con el entorno.</p>
+    <div class="hero-actions">
+      <a href="portafolio.html" class="btn-solid">Ver proyectos</a>
+      <a href="nosotros.html" class="btn-outline">Quiénes somos</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-n">10+</div><div class="stat-l">Años de exp.</div></div>
+      <div><div class="stat-n">50+</div><div class="stat-l">Proyectos</div></div>
+      <div><div class="stat-n">4</div><div class="stat-l">Servicios</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto1.jpg" alt="Proyecto destacado" onerror="this.src='https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1200&q=80'">
+    <span class="hero-tag">Taruma · 2025</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Diseño Arquitectónico</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Construcción</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Planificación Urbana</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Diseño de Interiores</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Paisajismo</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Consultoría Técnica</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Diseño Arquitectónico</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Construcción</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Planificación Urbana</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Diseño de Interiores</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Paisajismo</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Consultoría Técnica</span><span class="marquee-dot">·</span>
+  </div>
+</div>
+
+<!-- IDENTITY -->
+<section class="identity">
+  <div class="identity-visual reveal">
+    <img class="identity-img-main" src="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto2.jpg" alt="Nuestro trabajo" onerror="this.src='https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80'">
+    <img class="identity-accent" src="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto3.jpg" alt="Detalle" onerror="this.src='https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=400&q=80'">
+    <div class="identity-badge">Desde 2025</div>
+  </div>
+  <div class="reveal">
+    <span class="s-label">Quiénes somos</span>
+    <h2 class="s-title">Arquitectura con <em>propósito</em></h2>
+    <div class="divider"></div>
+    <div class="identity-text">
+      <p>Somos un despacho de arquitectura con sede en Tegucigalpa, Honduras. Nacimos con la convicción de que cada proyecto es una oportunidad para transformar espacios y enriquecer comunidades.</p>
+      <p>Combinamos creatividad, rigor técnico y sensibilidad al contexto en cada etapa del proceso, desde el primer boceto hasta la entrega final.</p>
+    </div>
+    <div class="identity-pillars">
+      <div class="pillar"><span class="pillar-num">01</span><div><div class="pillar-name">Misión</div><div class="pillar-desc">Diseñar espacios que eleven la calidad de vida con soluciones funcionales, estéticas y sostenibles.</div></div></div>
+      <div class="pillar"><span class="pillar-num">02</span><div><div class="pillar-name">Visión</div><div class="pillar-desc">Convertirnos en el despacho de referencia en arquitectura contemporánea de Centroamérica.</div></div></div>
+      <div class="pillar"><span class="pillar-num">03</span><div><div class="pillar-name">Compromiso</div><div class="pillar-desc">Cada proyecto refleja nuestra responsabilidad con el cliente, el entorno y la comunidad.</div></div></div>
+    </div>
+    <a href="nosotros.html" class="btn-outline" style="display:inline-block;margin-top:2.5rem">Conocer más →</a>
+  </div>
+</section>
+
+<!-- SERVICES PREVIEW -->
+<section class="services-preview">
+  <div class="sp-header reveal">
+    <div><span class="s-label">Lo que ofrecemos</span><h2 class="s-title">Nuestros <em>servicios</em></h2></div>
+    <a href="servicios.html" class="btn-outline">Ver todos →</a>
+  </div>
+  <div class="sp-grid">
+    <div class="sp-card reveal"><div class="sp-num">01</div><div class="sp-name">Diseño Arquitectónico</div><p class="sp-desc">Diseño integral para proyectos residenciales, comerciales e institucionales con enfoque contemporáneo.</p><a href="servicios.html" class="sp-arrow">Explorar →</a></div>
+    <div class="sp-card reveal"><div class="sp-num">02</div><div class="sp-name">Construcción y Remodelación</div><p class="sp-desc">Gestión completa de obra nueva y proyectos de remodelación con control total de calidad y plazos.</p><a href="servicios.html" class="sp-arrow">Explorar →</a></div>
+    <div class="sp-card reveal"><div class="sp-num">03</div><div class="sp-name">Planificación Urbana</div><p class="sp-desc">Planes urbanos, zonificación y diseño de espacios públicos con visión integral de ciudad.</p><a href="servicios.html" class="sp-arrow">Explorar →</a></div>
+    <div class="sp-card reveal"><div class="sp-num">04</div><div class="sp-name">Diseño de Interiores</div><p class="sp-desc">Ambientes interiores coherentes con la arquitectura del proyecto y la identidad del cliente.</p><a href="servicios.html" class="sp-arrow">Explorar →</a></div>
+    <div class="sp-card reveal"><div class="sp-num">05</div><div class="sp-name">Paisajismo</div><p class="sp-desc">Espacios exteriores y áreas verdes que complementan la arquitectura y enriquecen el entorno.</p><a href="servicios.html" class="sp-arrow">Explorar →</a></div>
+    <div class="sp-card reveal"><div class="sp-num">06</div><div class="sp-name">Consultoría Técnica</div><p class="sp-desc">Asesoría en normativa, permisos de construcción y auditorías técnicas de proyectos.</p><a href="servicios.html" class="sp-arrow">Explorar →</a></div>
+  </div>
+</section>
+
+<!-- PROJECTS PREVIEW -->
+<section class="projects-prev">
+  <div class="pp-header reveal">
+    <div><span class="s-label">Proyectos destacados</span><h2 class="s-title">Nuestro <em>portafolio</em></h2></div>
+    <a href="portafolio.html" class="btn-outline">Ver todos →</a>
+  </div>
+  <div class="pp-grid reveal">
+    <div class="pp-item">
+      <img class="pp-img" src="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto1.jpg" alt="Plaza Serrano" onerror="this.src='https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=80'">
+      <div class="pp-overlay"><div><p class="pp-cat">Comercial</p><p class="pp-name">Plaza Serrano</p></div></div>
+    </div>
+    <div class="pp-item">
+      <img class="pp-img" src="http://tommyvega.me/taruma-arquitectos/assets/img/Complejo Habitacional Lipidario2.png" alt="Complejo Habitacional" onerror="this.src='https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80'">
+      <div class="pp-overlay"><div><p class="pp-cat">Residencial</p><p class="pp-name">Complejo Habitacional Lipidario</p></div></div>
+    </div>
+    <div class="pp-item">
+      <img class="pp-img" src="http://tommyvega.me/taruma-arquitectos/assets/img/Complejo Turistico Colonial1.png" alt="Complejo Turístico" onerror="this.src='https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=600&q=80'">
+      <div class="pp-overlay"><div><p class="pp-cat">Turístico</p><p class="pp-name">Complejo Turístico Colonial</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<div class="philosophy">
+  <span class="s-label reveal">Nuestra filosofía</span>
+  <blockquote class="reveal">"La arquitectura no es solo construir edificios. Es crear experiencias, forjar identidades y dejar una huella que perdure en el tiempo y en las personas."</blockquote>
+  <cite class="reveal">— Taruma Arquitectos</cite>
+</div>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <h2 class="reveal">¿Tiene un proyecto en mente?</h2>
+  <p class="reveal">Cuéntenos su idea y la haremos realidad juntos</p>
+  <a href="cotizaciones.html" class="btn-white reveal">Solicitar cotización</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="f-brand"><span class="logo-text">Taruma Arquitectos</span><p>Diseño arquitectónico responsable y soluciones constructivas para proyectos residenciales, comerciales e institucionales en Honduras.</p></div>
+    <div class="f-col"><h4>Estudio</h4><ul><li><a href="nosotros.html">Nosotros</a></li><li><a href="servicios.html">Servicios</a></li><li><a href="procesos.html">Procesos</a></li></ul></div>
+    <div class="f-col"><h4>Proyectos</h4><ul><li><a href="portafolio.html">Portafolio</a></li><li><a href="galeria.html">Galería</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+    <div class="f-col"><h4>Contacto</h4><ul>
+      <li><a href="tel:+50498765432">+504 9876-5432</a></li>
+      <li><a href="mailto:info@taruma-arquitectos.com">info@taruma-arquitectos.com</a></li>
+      <li><a href="https://www.instagram.com/taruma.arquitectos">Instagram</a></li>
+      <li><a href="https://www.facebook.com/taruma.arquitectos">Facebook</a></li>
+      <li><a href="cotizaciones.html">Cotizaciones</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Taruma Arquitectos. Todos los derechos reservados.</p>
+    <p>Tegucigalpa, Honduras</p>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',scrollY>60)})
+function toggleMenu(){document.getElementById('mobMenu').classList.toggle('open')}
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.1,rootMargin:'0px 0px -40px 0px'})
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el))
+</script>
+</body>
+</html>
