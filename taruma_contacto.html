@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contacto — Taruma Arquitectos</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#F8F6F2;--bg2:#EFECE5;--bg3:#E8E4DC;
+  --carbon:#1A1A1A;--graphite:#2D2D2D;--stone:#6B6560;
+  --terra:#C4876A;--terra-light:#D9A88A;--terra-dark:#A36A4E;
+  --white:#FFFFFF;--border:rgba(26,26,26,0.1);
+  --ease:cubic-bezier(0.25,0.46,0.45,0.94)
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--carbon);overflow-x:hidden}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.1rem 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(248,246,242,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{height:38px;width:auto;object-fit:contain;mix-blend-mode:multiply;filter:contrast(1.1)}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;letter-spacing:0.14em;color:var(--carbon);text-transform:uppercase}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-size:0.72rem;letter-spacing:0.12em;color:var(--stone);text-decoration:none;text-transform:uppercase;transition:color 0.3s}
+.nav-links a:hover{color:var(--carbon)}
+.nav-links a.active{color:var(--carbon);border-bottom:1px solid var(--terra);padding-bottom:2px}
+.nav-cta{font-size:0.72rem;letter-spacing:0.12em;padding:0.6rem 1.5rem;border:1px solid var(--carbon);color:var(--carbon);background:transparent;text-decoration:none;text-transform:uppercase;transition:all 0.3s}
+.nav-cta:hover{background:var(--carbon);color:var(--white)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.hamburger span{display:block;width:22px;height:1px;background:var(--carbon)}
+.mob-menu{display:none;position:fixed;inset:0;background:var(--bg);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem}
+.mob-menu.open{display:flex}
+.mob-menu a{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--carbon);text-decoration:none;transition:color 0.3s}
+.mob-menu a:hover{color:var(--terra)}
+.mob-close{position:absolute;top:1.8rem;right:5%;font-size:0.75rem;letter-spacing:0.1em;color:var(--stone);cursor:pointer;background:none;border:none;text-transform:uppercase}
+
+.page-hero{padding:12rem 5% 6rem;background:var(--carbon);position:relative;overflow:hidden}
+.hero-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.08;filter:grayscale(100%)}
+.page-hero-inner{position:relative;z-index:1;max-width:640px}
+.breadcrumb{font-size:0.65rem;letter-spacing:0.2em;color:rgba(255,255,255,0.35);text-transform:uppercase;margin-bottom:2rem;display:flex;align-items:center;gap:0.8rem}
+.breadcrumb a{color:rgba(255,255,255,0.35);text-decoration:none;transition:color 0.3s}
+.breadcrumb a:hover{color:var(--terra-light)}
+.breadcrumb span{color:var(--terra-light)}
+.page-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,6vw,5rem);font-weight:300;line-height:1.05;color:var(--white)}
+.page-hero h1 em{font-style:italic;color:var(--terra-light)}
+.page-hero p{font-size:0.92rem;line-height:1.9;color:rgba(255,255,255,0.5);font-weight:300;max-width:480px;margin-top:1.5rem}
+
+.s-label{font-size:0.68rem;letter-spacing:0.25em;color:var(--terra);text-transform:uppercase;margin-bottom:1rem;display:block}
+.s-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:300;color:var(--carbon);line-height:1.1}
+.s-title em{font-style:italic;color:var(--terra)}
+.divider{width:40px;height:1px;background:var(--terra);margin:1.5rem 0}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s var(--ease),transform 0.8s var(--ease)}
+.reveal.visible{opacity:1;transform:none}
+
+/* CONTACT MAIN */
+.contact-main{background:var(--white);padding:7rem 5%}
+.contact-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:8rem;align-items:start}
+
+/* INFO */
+.contact-info p{font-size:0.9rem;line-height:1.9;color:var(--stone);font-weight:300;margin-bottom:2.5rem}
+.c-detail{display:flex;align-items:flex-start;gap:1.2rem;margin-bottom:2rem}
+.c-icon{width:44px;height:44px;border:1px solid rgba(196,135,106,0.25);display:flex;align-items:center;justify-content:center;color:var(--terra);font-size:1rem;flex-shrink:0}
+.c-text small{font-size:0.62rem;letter-spacing:0.18em;color:var(--terra);text-transform:uppercase;display:block;margin-bottom:4px}
+.c-text span,.c-text a{font-size:0.88rem;color:var(--carbon);text-decoration:none;display:block;line-height:1.5}
+.c-text a:hover{color:var(--terra)}
+.social-row{display:flex;gap:0.7rem;margin-top:2.5rem}
+.soc-link{width:40px;height:40px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--stone);font-size:0.75rem;text-decoration:none;font-weight:500;transition:all 0.3s;text-transform:uppercase}
+.soc-link:hover{border-color:var(--terra);color:var(--terra)}
+.hours-block{margin-top:2.5rem;padding:1.5rem;background:var(--bg2);border-left:2px solid var(--terra)}
+.hours-title{font-size:0.7rem;letter-spacing:0.18em;color:var(--terra);text-transform:uppercase;margin-bottom:1rem}
+.hours-row{display:flex;justify-content:space-between;font-size:0.8rem;color:var(--stone);padding:0.4rem 0;border-bottom:1px solid var(--border);font-weight:300}
+.hours-row:last-child{border-bottom:none}
+.hours-row strong{color:var(--carbon);font-weight:500}
+
+/* FORM */
+.contact-form{}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:0}
+.fg{margin-bottom:1.2rem}
+.fg label{font-size:0.65rem;letter-spacing:0.18em;color:var(--stone);text-transform:uppercase;display:block;margin-bottom:0.5rem}
+.fg input,.fg textarea,.fg select{width:100%;background:var(--bg);border:1px solid var(--border);padding:0.85rem 1rem;color:var(--carbon);font-family:'Inter',sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.3s;appearance:none;border-radius:0}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--terra);background:var(--white)}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(107,101,96,0.4)}
+.fg textarea{min-height:140px;resize:vertical}
+.fg select option{background:var(--white)}
+.char-count{font-size:0.65rem;color:var(--stone);text-align:right;margin-top:0.3rem}
+.form-submit{width:100%;padding:1rem;background:var(--carbon);color:var(--white);border:none;font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;transition:background 0.3s;font-family:'Inter',sans-serif;margin-top:0.5rem}
+.form-submit:hover{background:var(--graphite)}
+.form-note{font-size:0.7rem;color:var(--stone);margin-top:0.8rem;font-weight:300}
+.form-fb{display:none;margin-top:1rem;padding:1rem;font-size:0.82rem;text-align:center;border-radius:0}
+.form-fb.ok{background:rgba(50,180,100,0.08);border:1px solid rgba(50,180,100,0.2);color:#3aaa6a}
+.form-fb.err{background:rgba(220,60,60,0.08);border:1px solid rgba(220,60,60,0.2);color:#d44}
+
+/* MAP PLACEHOLDER */
+.map-section{background:var(--bg2);padding:7rem 5%}
+.map-inner{display:grid;grid-template-columns:1fr 1.8fr;gap:6rem;align-items:center}
+.map-text p{font-size:0.88rem;line-height:1.85;color:var(--stone);font-weight:300;margin-bottom:1.5rem}
+.map-detail{display:flex;align-items:center;gap:0.8rem;font-size:0.82rem;color:var(--stone);margin-bottom:0.6rem;font-weight:300}
+.map-detail strong{color:var(--carbon);font-weight:500}
+.map-frame{width:100%;height:380px;background:var(--bg3);position:relative;overflow:hidden;border:1px solid var(--border)}
+.map-frame iframe{width:100%;height:100%;border:none;filter:grayscale(30%) contrast(1.05)}
+.map-frame-overlay{position:absolute;inset:0;pointer-events:none;border:1px solid var(--border)}
+
+/* FAQ MINI */
+.faq-mini{background:var(--white);padding:7rem 5%}
+.faq-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem}
+.faq-item{padding:1.8rem;border:1px solid var(--border);cursor:pointer;transition:border-color 0.3s}
+.faq-item.open{border-color:var(--terra)}
+.faq-q{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.faq-q-text{font-size:0.85rem;font-weight:500;color:var(--carbon);line-height:1.4}
+.faq-icon{width:22px;height:22px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:var(--stone);flex-shrink:0;transition:all 0.3s}
+.faq-item.open .faq-icon{background:var(--terra);border-color:var(--terra);color:var(--white);transform:rotate(45deg)}
+.faq-a{font-size:0.8rem;line-height:1.75;color:var(--stone);font-weight:300;max-height:0;overflow:hidden;transition:max-height 0.4s var(--ease),padding-top 0.3s}
+.faq-item.open .faq-a{max-height:160px;padding-top:1rem}
+
+footer{background:var(--graphite);color:rgba(255,255,255,0.55);padding:5rem 5% 2.5rem}
+.footer-top{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem}
+.f-brand .logo-text{color:var(--white);font-size:1.3rem;display:block;margin-bottom:1rem}
+.f-brand p{font-size:0.8rem;line-height:1.85;font-weight:300;max-width:260px}
+.f-col h4{font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--terra-light);margin-bottom:1.5rem}
+.f-col ul{list-style:none;display:flex;flex-direction:column;gap:0.65rem}
+.f-col ul a{font-size:0.8rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.3s}
+.f-col ul a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:2rem;display:flex;justify-content:space-between}
+.footer-bottom p{font-size:0.72rem}
+
+@media(max-width:960px){
+  .nav-links,.nav-cta{display:none}
+  .hamburger{display:flex}
+  .contact-grid{grid-template-columns:1fr;gap:4rem}
+  .map-inner{grid-template-columns:1fr;gap:3rem}
+  .faq-mini-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr 1fr;gap:2.5rem}
+  .form-row{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .footer-top{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <span class="logo-text">Taruma Arquitectos</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="nosotros.html">Nosotros</a></li>
+    <li><a href="servicios.html">Servicios</a></li>
+    <li><a href="portafolio.html">Portafolio</a></li>
+    <li><a href="procesos.html">Procesos</a></li>
+    <li><a href="galeria.html">Galería</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contacto.html" class="active">Contacto</a></li>
+  </ul>
+  <a href="cotizaciones.html" class="nav-cta">Cotizar</a>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <button class="mob-close" onclick="toggleMenu()">✕ Cerrar</button>
+  <a href="nosotros.html" onclick="toggleMenu()">Nosotros</a>
+  <a href="servicios.html" onclick="toggleMenu()">Servicios</a>
+  <a href="portafolio.html" onclick="toggleMenu()">Portafolio</a>
+  <a href="procesos.html" onclick="toggleMenu()">Procesos</a>
+  <a href="galeria.html" onclick="toggleMenu()">Galería</a>
+  <a href="blog.html" onclick="toggleMenu()">Blog</a>
+  <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
+  <a href="cotizaciones.html" onclick="toggleMenu()">Cotizar</a>
+</div>
+
+<div class="page-hero">
+  <img class="hero-bg-img" src="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto1.jpg" alt="" onerror="this.src='https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1400&q=80'">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Inicio</a> › <span>Contacto</span></div>
+    <h1>Hablemos de su <em>proyecto</em></h1>
+    <p>Estamos listos para escuchar su idea y acompañarle desde el primer trazo hasta la entrega. No tiene ningún costo ponerse en contacto.</p>
+  </div>
+</div>
+
+<!-- CONTACT MAIN -->
+<section class="contact-main">
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <span class="s-label">Información de contacto</span>
+      <h2 class="s-title">Encuéntrenos</h2>
+      <div class="divider"></div>
+      <p>Nuestro equipo está disponible de lunes a viernes para atender sus consultas, agendar reuniones y dar seguimiento a sus proyectos.</p>
+
+      <div class="c-detail">
+        <div class="c-icon">📍</div>
+        <div class="c-text">
+          <small>Dirección</small>
+          <span>Avenida Principal, Tegucigalpa</span>
+          <span>Honduras, C.A.</span>
+        </div>
+      </div>
+      <div class="c-detail">
+        <div class="c-icon">📞</div>
+        <div class="c-text">
+          <small>Teléfono</small>
+          <a href="tel:+50498765432">+504 9876-5432</a>
+        </div>
+      </div>
+      <div class="c-detail">
+        <div class="c-icon">✉</div>
+        <div class="c-text">
+          <small>Correo electrónico</small>
+          <a href="mailto:info@taruma-arquitectos.com">info@taruma-arquitectos.com</a>
+        </div>
+      </div>
+      <div class="c-detail">
+        <div class="c-icon">💬</div>
+        <div class="c-text">
+          <small>WhatsApp</small>
+          <a href="https://wa.me/50498765432">+504 9876-5432</a>
+        </div>
+      </div>
+
+      <div class="social-row">
+        <a href="https://www.instagram.com/taruma.arquitectos" target="_blank" class="soc-link">ig</a>
+        <a href="https://www.facebook.com/taruma.arquitectos" target="_blank" class="soc-link">fb</a>
+        <a href="https://www.linkedin.com" target="_blank" class="soc-link">in</a>
+      </div>
+
+      <div class="hours-block">
+        <div class="hours-title">Horario de atención</div>
+        <div class="hours-row"><strong>Lunes – Viernes</strong><span>8:00 am – 6:00 pm</span></div>
+        <div class="hours-row"><strong>Sábado</strong><span>9:00 am – 1:00 pm</span></div>
+        <div class="hours-row"><strong>Domingo</strong><span>Cerrado</span></div>
+      </div>
+    </div>
+
+    <div class="contact-form reveal">
+      <span class="s-label">Formulario de contacto</span>
+      <h2 class="s-title">Envíenos un <em>mensaje</em></h2>
+      <div class="divider"></div>
+
+      <div class="form-row">
+        <div class="fg"><label>Nombre *</label><input type="text" id="cNombre" placeholder="Su nombre"></div>
+        <div class="fg"><label>Apellido *</label><input type="text" id="cApellido" placeholder="Su apellido"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Correo electrónico *</label><input type="email" id="cCorreo" placeholder="correo@ejemplo.com"></div>
+        <div class="fg"><label>Teléfono</label><input type="tel" id="cTel" placeholder="+504 0000-0000"></div>
+      </div>
+      <div class="fg">
+        <label>Tipo de consulta</label>
+        <select id="cTipo">
+          <option value="">Seleccione una opción</option>
+          <option>Consulta sobre servicios</option>
+          <option>Solicitar cotización</option>
+          <option>Agendar reunión</option>
+          <option>Información de proyectos</option>
+          <option>Trabajo o colaboración</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Tipo de proyecto</label>
+        <select id="cProyecto">
+          <option value="">Seleccione una opción</option>
+          <option>Residencial unifamiliar</option>
+          <option>Conjunto habitacional</option>
+          <option>Comercial</option>
+          <option>Institucional</option>
+          <option>Turístico / hotelería</option>
+          <option>Urbano / espacio público</option>
+          <option>Remodelación</option>
+          <option>Aún no lo tengo definido</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Mensaje *</label>
+        <textarea id="cMensaje" placeholder="Cuéntenos sobre su proyecto, necesidades o consulta..." maxlength="500" oninput="updateCount(this)"></textarea>
+        <div class="char-count"><span id="charNum">0</span>/500</div>
+      </div>
+      <button class="form-submit" onclick="enviarContacto()">Enviar mensaje</button>
+      <p class="form-note">Respondemos en menos de 24 horas hábiles. Sus datos son confidenciales y no serán compartidos.</p>
+      <div class="form-fb" id="cFb"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section class="map-section">
+  <div class="map-inner">
+    <div class="reveal">
+      <span class="s-label">Ubicación</span>
+      <h2 class="s-title">Visítenos en <em>Tegucigalpa</em></h2>
+      <div class="divider"></div>
+      <p>Nuestras oficinas están ubicadas en Tegucigalpa, Honduras. Puede agendar una visita previa llamada o por correo electrónico.</p>
+      <div style="margin-top:1.5rem">
+        <div class="map-detail">📍 <span><strong>Dirección:</strong> Avenida Principal, Tegucigalpa, HN</span></div>
+        <div class="map-detail">🚗 <span><strong>Estacionamiento:</strong> Disponible en el edificio</span></div>
+        <div class="map-detail">🚌 <span><strong>Transporte:</strong> Acceso en transporte público</span></div>
+      </div>
+      <a href="https://maps.google.com" target="_blank" style="display:inline-block;margin-top:2rem;padding:0.8rem 1.8rem;background:var(--carbon);color:var(--white);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;transition:background 0.3s">Ver en Google Maps →</a>
+    </div>
+    <div class="map-frame reveal">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d123456!2d-87.2067!3d14.0818!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f6fb4c6e1234567%3A0xabcdef1234567890!2sTegucigalpa%2C%20Honduras!5e0!3m2!1ses!2shn!4v1234567890" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="map-frame-overlay"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-mini">
+  <div style="text-align:center;max-width:540px;margin:0 auto 0" class="reveal">
+    <span class="s-label">Preguntas frecuentes</span>
+    <h2 class="s-title">Resolvemos sus <em>dudas</em></h2>
+  </div>
+  <div class="faq-mini-grid">
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q"><span class="faq-q-text">¿La primera reunión tiene algún costo?</span><div class="faq-icon">+</div></div>
+      <div class="faq-a">No. La consulta inicial es completamente gratuita y sin compromiso. Queremos conocer su proyecto y que conozca nuestra forma de trabajar antes de cualquier decisión.</div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q"><span class="faq-q-text">¿Cuánto tiempo tardan en responder?</span><div class="faq-icon">+</div></div>
+      <div class="faq-a">Respondemos todos los mensajes en menos de 24 horas hábiles. Para consultas urgentes, puede contactarnos directamente por WhatsApp.</div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q"><span class="faq-q-text">¿Puedo agendar una reunión virtual?</span><div class="faq-icon">+</div></div>
+      <div class="faq-a">Sí, ofrecemos reuniones por videollamada para clientes que no se encuentren en Tegucigalpa o que prefieran el formato digital.</div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q"><span class="faq-q-text">¿Trabajan con proyectos en todo Honduras?</span><div class="faq-icon">+</div></div>
+      <div class="faq-a">Sí, trabajamos en todo el territorio nacional y estamos expandiéndonos a nivel centroamericano. Coordinamos visitas de campo según la ubicación del proyecto.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div class="f-brand"><span class="logo-text">Taruma Arquitectos</span><p>Diseño arquitectónico responsable y soluciones constructivas para proyectos residenciales, comerciales e institucionales en Honduras.</p></div>
+    <div class="f-col"><h4>Estudio</h4><ul><li><a href="nosotros.html">Nosotros</a></li><li><a href="servicios.html">Servicios</a></li><li><a href="procesos.html">Procesos</a></li></ul></div>
+    <div class="f-col"><h4>Proyectos</h4><ul><li><a href="portafolio.html">Portafolio</a></li><li><a href="galeria.html">Galería</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+    <div class="f-col"><h4>Contacto</h4><ul>
+      <li><a href="tel:+50498765432">+504 9876-5432</a></li>
+      <li><a href="mailto:info@taruma-arquitectos.com">info@taruma-arquitectos.com</a></li>
+      <li><a href="https://www.instagram.com/taruma.arquitectos">Instagram</a></li>
+      <li><a href="https://www.facebook.com/taruma.arquitectos">Facebook</a></li>
+      <li><a href="cotizaciones.html">Cotizaciones</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Taruma Arquitectos. Todos los derechos reservados.</p>
+    <p>Tegucigalpa, Honduras</p>
+  </div>
+</footer>
+
+<script>
+function toggleMenu(){document.getElementById('mobMenu').classList.toggle('open')}
+function updateCount(el){document.getElementById('charNum').textContent=el.value.length}
+function toggleFaq(el){
+  const isOpen=el.classList.contains('open')
+  document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'))
+  if(!isOpen)el.classList.add('open')
+}
+function enviarContacto(){
+  const n=document.getElementById('cNombre').value.trim()
+  const e=document.getElementById('cCorreo').value.trim()
+  const m=document.getElementById('cMensaje').value.trim()
+  const fb=document.getElementById('cFb')
+  if(!n||!e||!m){
+    fb.className='form-fb err';fb.style.display='block'
+    fb.textContent='Por favor complete los campos marcados con *.';return
+  }
+  fb.className='form-fb ok';fb.style.display='block'
+  fb.textContent='¡Mensaje enviado con éxito! Nos comunicaremos con usted en menos de 24 horas.'
+  document.querySelectorAll('.contact-form input,.contact-form textarea,.contact-form select').forEach(el=>el.value='')
+  document.getElementById('charNum').textContent='0'
+}
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.08,rootMargin:'0px 0px -40px 0px'})
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el))
+</script>
+</body>
+</html>

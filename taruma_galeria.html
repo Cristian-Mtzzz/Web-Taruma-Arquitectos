@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galería — Taruma Arquitectos</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#F8F6F2;--bg2:#EFECE5;--bg3:#E8E4DC;
+  --carbon:#1A1A1A;--graphite:#2D2D2D;--stone:#6B6560;
+  --terra:#C4876A;--terra-light:#D9A88A;--terra-dark:#A36A4E;
+  --white:#FFFFFF;--border:rgba(26,26,26,0.1);
+  --ease:cubic-bezier(0.25,0.46,0.45,0.94)
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--carbon);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.1rem 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(248,246,242,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{height:38px;width:auto;object-fit:contain;mix-blend-mode:multiply;filter:contrast(1.1)}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;letter-spacing:0.14em;color:var(--carbon);text-transform:uppercase}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-size:0.72rem;letter-spacing:0.12em;color:var(--stone);text-decoration:none;text-transform:uppercase;transition:color 0.3s}
+.nav-links a:hover{color:var(--carbon)}
+.nav-links a.active{color:var(--carbon);border-bottom:1px solid var(--terra);padding-bottom:2px}
+.nav-cta{font-size:0.72rem;letter-spacing:0.12em;padding:0.6rem 1.5rem;border:1px solid var(--carbon);color:var(--carbon);background:transparent;text-decoration:none;text-transform:uppercase;transition:all 0.3s}
+.nav-cta:hover{background:var(--carbon);color:var(--white)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.hamburger span{display:block;width:22px;height:1px;background:var(--carbon)}
+.mob-menu{display:none;position:fixed;inset:0;background:var(--bg);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem}
+.mob-menu.open{display:flex}
+.mob-menu a{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--carbon);text-decoration:none;transition:color 0.3s}
+.mob-menu a:hover{color:var(--terra)}
+.mob-close{position:absolute;top:1.8rem;right:5%;font-size:0.75rem;letter-spacing:0.1em;color:var(--stone);cursor:pointer;background:none;border:none;text-transform:uppercase}
+
+/* PAGE HERO */
+.page-hero{padding:12rem 5% 6rem;background:var(--white);position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;top:0;right:0;width:35%;height:100%;background:var(--bg2)}
+.page-hero-inner{position:relative;z-index:1}
+.breadcrumb{font-size:0.65rem;letter-spacing:0.2em;color:var(--stone);text-transform:uppercase;margin-bottom:2rem;display:flex;align-items:center;gap:0.8rem}
+.breadcrumb a{color:var(--stone);text-decoration:none;transition:color 0.3s}
+.breadcrumb a:hover{color:var(--terra)}
+.breadcrumb span{color:var(--terra)}
+.page-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,6vw,5rem);font-weight:300;line-height:1.05;color:var(--carbon);max-width:600px}
+.page-hero h1 em{font-style:italic;color:var(--terra)}
+.page-hero p{font-size:0.92rem;line-height:1.9;color:var(--stone);font-weight:300;max-width:480px;margin-top:1.5rem}
+
+/* FILTERS */
+.filters-bar{background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;display:flex;align-items:center;gap:0;position:sticky;top:62px;z-index:50;overflow-x:auto}
+.filter-btn{padding:1.1rem 1.6rem;font-size:0.7rem;letter-spacing:0.12em;color:var(--stone);text-transform:uppercase;background:transparent;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.3s;white-space:nowrap;flex-shrink:0}
+.filter-btn:hover{color:var(--carbon)}
+.filter-btn.active{color:var(--carbon);border-bottom-color:var(--terra)}
+
+/* MASONRY */
+.gallery-wrap{padding:4rem 5% 7rem;background:var(--bg)}
+.masonry{columns:3;gap:6px;column-fill:balance}
+.masonry-item{break-inside:avoid;margin-bottom:6px;position:relative;overflow:hidden;cursor:pointer;display:block;background:var(--bg3)}
+.masonry-item.hidden{display:none}
+.masonry-item img{width:100%;display:block;transition:transform 0.6s var(--ease),filter 0.4s}
+.masonry-item:hover img{transform:scale(1.04);filter:brightness(0.88)}
+.masonry-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:1.5rem;background:linear-gradient(to top,rgba(26,26,26,0.75),transparent 55%);opacity:0;transition:opacity 0.35s}
+.masonry-item:hover .masonry-overlay{opacity:1}
+.masonry-cat{font-size:0.6rem;letter-spacing:0.18em;color:var(--terra-light);text-transform:uppercase;margin-bottom:0.3rem}
+.masonry-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);font-weight:300}
+.masonry-zoom{position:absolute;top:1rem;right:1rem;width:36px;height:36px;border:1px solid rgba(255,255,255,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:1rem;opacity:0;transition:opacity 0.3s,background 0.3s}
+.masonry-item:hover .masonry-zoom{opacity:1}
+.masonry-zoom:hover{background:var(--terra);border-color:var(--terra)}
+
+/* EMPTY */
+.empty-gallery{display:none;text-align:center;padding:5rem 2rem}
+.empty-gallery.show{display:block}
+.empty-gallery p{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:var(--stone)}
+
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;inset:0;z-index:200;background:rgba(14,14,14,0.96);align-items:center;justify-content:center}
+.lightbox.open{display:flex}
+.lb-inner{position:relative;max-width:90vw;max-height:90vh;display:flex;align-items:center;gap:1.5rem}
+.lb-img{max-width:78vw;max-height:85vh;object-fit:contain;display:block}
+.lb-info{min-width:200px;color:var(--white)}
+.lb-cat{font-size:0.62rem;letter-spacing:0.2em;color:var(--terra-light);text-transform:uppercase;margin-bottom:0.6rem}
+.lb-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;margin-bottom:0.5rem;line-height:1.2}
+.lb-proj{font-size:0.78rem;color:rgba(255,255,255,0.4);margin-bottom:1.5rem;font-weight:300}
+.lb-divider{width:30px;height:1px;background:var(--terra);margin-bottom:1.5rem}
+.lb-close{position:absolute;top:-3rem;right:0;background:none;border:none;color:rgba(255,255,255,0.5);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:color 0.3s}
+.lb-close:hover{color:var(--white)}
+.lb-nav{display:flex;gap:0.8rem;margin-top:2rem}
+.lb-btn{width:40px;height:40px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.6);cursor:pointer;font-size:1rem;transition:all 0.3s;display:flex;align-items:center;justify-content:center}
+.lb-btn:hover{border-color:var(--terra);color:var(--terra)}
+.lb-counter{font-size:0.7rem;letter-spacing:0.12em;color:rgba(255,255,255,0.3);margin-top:1rem;text-transform:uppercase}
+
+/* CTA */
+.cta-strip{background:var(--terra);padding:6rem 5%;text-align:center}
+.cta-strip h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:300;color:var(--white);margin-bottom:0.6rem}
+.cta-strip p{font-size:0.88rem;color:rgba(255,255,255,0.75);margin-bottom:2.5rem;font-weight:300}
+.btn-white{padding:0.9rem 2.5rem;background:var(--white);color:var(--terra-dark);border:none;font-size:0.73rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.3s;font-weight:500}
+.btn-white:hover{background:var(--bg)}
+
+/* FOOTER */
+footer{background:var(--graphite);color:rgba(255,255,255,0.55);padding:5rem 5% 2.5rem}
+.footer-top{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem}
+.f-brand .logo-text{color:var(--white);font-size:1.3rem;display:block;margin-bottom:1rem}
+.f-brand p{font-size:0.8rem;line-height:1.85;font-weight:300;max-width:260px}
+.f-col h4{font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--terra-light);margin-bottom:1.5rem}
+.f-col ul{list-style:none;display:flex;flex-direction:column;gap:0.65rem}
+.f-col ul a{font-size:0.8rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.3s}
+.f-col ul a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:2rem;display:flex;justify-content:space-between}
+.footer-bottom p{font-size:0.72rem}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s var(--ease),transform 0.8s var(--ease)}
+.reveal.visible{opacity:1;transform:none}
+
+@media(max-width:960px){
+  .nav-links,.nav-cta{display:none}
+  .hamburger{display:flex}
+  .masonry{columns:2}
+  .lb-inner{flex-direction:column;max-width:95vw}
+  .lb-img{max-width:92vw;max-height:65vh}
+  .lb-info{min-width:unset;width:100%}
+  .footer-top{grid-template-columns:1fr 1fr;gap:2.5rem}
+}
+@media(max-width:600px){
+  .masonry{columns:1}
+  .footer-top{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <span class="logo-text">Taruma Arquitectos</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="nosotros.html">Nosotros</a></li>
+    <li><a href="servicios.html">Servicios</a></li>
+    <li><a href="portafolio.html">Portafolio</a></li>
+    <li><a href="procesos.html">Procesos</a></li>
+    <li><a href="galeria.html" class="active">Galería</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <a href="cotizaciones.html" class="nav-cta">Cotizar</a>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <button class="mob-close" onclick="toggleMenu()">✕ Cerrar</button>
+  <a href="nosotros.html" onclick="toggleMenu()">Nosotros</a>
+  <a href="servicios.html" onclick="toggleMenu()">Servicios</a>
+  <a href="portafolio.html" onclick="toggleMenu()">Portafolio</a>
+  <a href="procesos.html" onclick="toggleMenu()">Procesos</a>
+  <a href="galeria.html" onclick="toggleMenu()">Galería</a>
+  <a href="blog.html" onclick="toggleMenu()">Blog</a>
+  <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
+  <a href="cotizaciones.html" onclick="toggleMenu()">Cotizar</a>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Inicio</a> › <span>Galería</span></div>
+    <h1>Galería de <em>imágenes</em></h1>
+    <p>Una mirada visual a nuestros proyectos más representativos. Explora espacios, detalles constructivos y la identidad que define a Taruma Arquitectos.</p>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters-bar">
+  <button class="filter-btn active" onclick="filterGallery('all',this)">Todas</button>
+  <button class="filter-btn" onclick="filterGallery('exterior',this)">Exteriores</button>
+  <button class="filter-btn" onclick="filterGallery('interior',this)">Interiores</button>
+  <button class="filter-btn" onclick="filterGallery('residencial',this)">Residencial</button>
+  <button class="filter-btn" onclick="filterGallery('comercial',this)">Comercial</button>
+  <button class="filter-btn" onclick="filterGallery('turistico',this)">Turístico</button>
+  <button class="filter-btn" onclick="filterGallery('urbano',this)">Urbano</button>
+</div>
+
+<!-- MASONRY -->
+<div class="gallery-wrap">
+  <div class="masonry" id="masonry">
+
+    <div class="masonry-item reveal" data-cat="exterior comercial" data-title="Plaza Serrano — Fachada principal" data-proj="Plaza Serrano" onclick="openLB(0)">
+      <img src="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto1.jpg" alt="Plaza Serrano" onerror="this.src='https://images.unsplash.com/photo-1486325212027-8081e485255e?w=700&q=80'">
+      <div class="masonry-overlay"><p class="masonry-cat">Comercial · Exterior</p><p class="masonry-title">Plaza Serrano</p></div>
+      <div class="masonry-zoom">+</div>
+    </div>
+
+    <div class="masonry-item reveal" data-cat="exterior residencial" data-title="Complejo Habitacional — Vista aérea" data-proj="Complejo Habitacional Lipidario" onclick="openLB(1)">
+      <img src="http://tommyvega.me/taruma-arquitectos/assets/img/Complejo Habitacional Lipidario2.png" alt="Complejo Habitacional" onerror="this.src='https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=700&q=80'">
+      <div class="masonry-overlay"><p class="masonry-cat">Residencial · Exterior</p><p class="masonry-title">Complejo Habitacional Lipidario</p></div>
+      <div class="masonry-zoom">+</div>
+    </div>
+
+    <div class="masonry-item reveal" data-cat="interior comercial" data-title="Cafetería — Área de mesas" data-proj="Cafetería Contemporánea" onclick="openLB(2)">
+      <img src="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto3.jpg" alt="Cafetería" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=700&q=80'">
+      <div class="masonry-overlay"><p class="masonry-cat">Comercial · Interior</p><p class="masonry-title">Cafetería Contemporánea</p></div>
+      <div class="masonry-zoom">+</div>
+    </div>
+
+    <div class="masonry-item reveal" data-cat="exterior turistico" data-title="Cabañas The Rubra — Vista exterior" data-proj="Cabañas The Rubra" onclick="openLB(3)">
+      <img src="http://tommyvega.me/taruma-arquitectos/assets/img/Cabañas The Rubra4.png" alt="Cabañas The Rubra" onerror="this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=700&q=80'">
+      <div class="masonry-overlay"><p class="masonry-cat">Turístico · Exterior</p><p class="masonry-title">Cabañas The Rubra</p></div>
+      <div class="masonry-zoom">+</div>
+    </div>
+
+    <div class="masonry-item reveal" data-cat="exterior urbano" data-title="Complejo Deportivo — Fachada" data-proj="Complejo Deportivo" onclick="openLB(4)">
+      <img src="http://tommyvega.me/taruma-arquitectos/assets/img/Complejo Deportivo1.png" alt="Complejo Deportivo" onerror="this.src='https://images.unsplash.com/photo-1505664194779-8beaceb93de5?w=700&q=80'">
+      <div class="masonry-overlay"><p class="masonry-cat">Urbano · Exterior</p><p class="masonry-title">Complejo Deportivo</p></div>
+      <div class="masonry-zoom">+</div>
+    </div>
+
+    <div class="masonry-item reveal" data-cat="exterior turistico" data-title="Complejo Turístico Colonial — Patio central" data-proj="Complejo Turístico Colonial" onclick="openLB(5)">
+      <img src="http://tommyvega.me/taruma-arquitectos/assets/img/Complejo Turistico Colonial1.png" alt="Complejo Turístico" onerror="this.src='https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=700&q=80'">
+      <div class="masonry-overlay"><p class="masonry-cat">Turístico · Exterior</p><p class="masonry-title">Complejo Turístico Colonial</p></div>
+      <div class="masonry-zoom">+</div>
+    </div>
+
+    <div class="masonry-item reveal" data-cat="interior residencial" data-title="Residencia Norte — Sala principal" data-proj="Residencia Privada Norte" onclick="openLB(6)">
+      <img src="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto2.jpg" alt="Residencia interior" onerror="this.src='https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=700&q=80'">
+      <div class="masonry-overlay"><p class="masonry-cat">Residencial · Interior</p><p class="masonry-title">Residencia Privada Norte</p></div>
+      <div class="masonry-zoom">+</div>
+    </div>
+
+    <div class="masonry-item reveal" data-cat="exterior comercial" data-title="Plaza Serrano — Detalle de fachada" data-proj="Plaza Serrano" onclick="openLB(7)">
+      <img src="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto1.jpg" alt="Plaza Serrano detalle" onerror="this.src='https://images.unsplash.com/photo-1486325212027-8081e485255e?w=500&q=80'">
+      <div class="masonry-overlay"><p class="masonry-cat">Comercial · Detalle</p><p class="masonry-title">Plaza Serrano — Detalle</p></div>
+      <div class="masonry-zoom">+</div>
+    </div>
+
+    <div class="masonry-item reveal" data-cat="exterior residencial" data-title="Complejo Habitacional — Acceso" data-proj="Complejo Habitacional Lipidario" onclick="openLB(8)">
+      <img src="http://tommyvega.me/taruma-arquitectos/assets/img/Complejo Habitacional Lipidario2.png" alt="Acceso" onerror="this.src='https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=700&q=80'">
+      <div class="masonry-overlay"><p class="masonry-cat">Residencial · Acceso</p><p class="masonry-title">Complejo Habitacional — Acceso</p></div>
+      <div class="masonry-zoom">+</div>
+    </div>
+
+    <div class="masonry-item reveal" data-cat="exterior turistico" data-title="Cabañas The Rubra — Entorno natural" data-proj="Cabañas The Rubra" onclick="openLB(9)">
+      <img src="http://tommyvega.me/taruma-arquitectos/assets/img/Cabañas The Rubra4.png" alt="Entorno natural" onerror="this.src='https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=700&q=80'">
+      <div class="masonry-overlay"><p class="masonry-cat">Turístico · Paisaje</p><p class="masonry-title">Cabañas The Rubra — Entorno</p></div>
+      <div class="masonry-zoom">+</div>
+    </div>
+
+    <div class="masonry-item reveal" data-cat="exterior urbano" data-title="Parque Urbano — Espacios públicos" data-proj="Parque Urbano Central" onclick="openLB(10)">
+      <img src="http://tommyvega.me/taruma-arquitectos/assets/img/proyecto2.jpg" alt="Parque Urbano" onerror="this.src='https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=700&q=80'">
+      <div class="masonry-overlay"><p class="masonry-cat">Urbano · Espacio público</p><p class="masonry-title">Parque Urbano Central</p></div>
+      <div class="masonry-zoom">+</div>
+    </div>
+
+    <div class="masonry-item reveal" data-cat="interior turistico" data-title="Complejo Turístico — Lobby" data-proj="Complejo Turístico Colonial" onclick="openLB(11)">
+      <img src="http://tommyvega.me/taruma-arquitectos/assets/img/Complejo Turistico Colonial1.png" alt="Lobby" onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?w=700&q=80'">
+      <div class="masonry-overlay"><p class="masonry-cat">Turístico · Interior</p><p class="masonry-title">Complejo Turístico — Lobby</p></div>
+      <div class="masonry-zoom">+</div>
+    </div>
+
+  </div>
+  <div class="empty-gallery" id="emptyGal"><p>No hay imágenes en esta categoría.</p></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lb" onclick="closeLBOutside(event)">
+  <div class="lb-inner">
+    <button class="lb-close" onclick="closeLB()">✕ Cerrar</button>
+    <img class="lb-img" id="lbImg" src="" alt="">
+    <div class="lb-info">
+      <p class="lb-cat" id="lbCat"></p>
+      <h3 class="lb-title" id="lbTitle"></h3>
+      <p class="lb-proj" id="lbProj"></p>
+      <div class="lb-divider"></div>
+      <div class="lb-nav">
+        <button class="lb-btn" onclick="lbPrev()">←</button>
+        <button class="lb-btn" onclick="lbNext()">→</button>
+      </div>
+      <p class="lb-counter" id="lbCount"></p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <h2 class="reveal">¿Le gustaría un proyecto así?</h2>
+  <p class="reveal">Hablemos de su idea y construyamos algo extraordinario juntos</p>
+  <a href="cotizaciones.html" class="btn-white reveal">Solicitar cotización</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="f-brand"><span class="logo-text">Taruma Arquitectos</span><p>Diseño arquitectónico responsable y soluciones constructivas para proyectos residenciales, comerciales e institucionales en Honduras.</p></div>
+    <div class="f-col"><h4>Estudio</h4><ul><li><a href="nosotros.html">Nosotros</a></li><li><a href="servicios.html">Servicios</a></li><li><a href="procesos.html">Procesos</a></li></ul></div>
+    <div class="f-col"><h4>Proyectos</h4><ul><li><a href="portafolio.html">Portafolio</a></li><li><a href="galeria.html">Galería</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+    <div class="f-col"><h4>Contacto</h4><ul>
+      <li><a href="tel:+50498765432">+504 9876-5432</a></li>
+      <li><a href="mailto:info@taruma-arquitectos.com">info@taruma-arquitectos.com</a></li>
+      <li><a href="https://www.instagram.com/taruma.arquitectos">Instagram</a></li>
+      <li><a href="https://www.facebook.com/taruma.arquitectos">Facebook</a></li>
+      <li><a href="cotizaciones.html">Cotizaciones</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Taruma Arquitectos. Todos los derechos reservados.</p>
+    <p>Tegucigalpa, Honduras</p>
+  </div>
+</footer>
+
+<script>
+function toggleMenu(){document.getElementById('mobMenu').classList.toggle('open')}
+
+// FILTER
+function filterGallery(cat,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'))
+  btn.classList.add('active')
+  const items=document.querySelectorAll('.masonry-item')
+  let vis=0
+  items.forEach(item=>{
+    const cats=item.dataset.cat||''
+    const show=cat==='all'||cats.includes(cat)
+    item.classList.toggle('hidden',!show)
+    if(show)vis++
+  })
+  document.getElementById('emptyGal').classList.toggle('show',vis===0)
+}
+
+// LIGHTBOX
+const items=[...document.querySelectorAll('.masonry-item')]
+let lbVisible=[]
+let lbIdx=0
+
+function getVisible(){return items.filter(i=>!i.classList.contains('hidden'))}
+
+function openLB(globalIdx){
+  lbVisible=getVisible()
+  lbIdx=lbVisible.indexOf(items[globalIdx])
+  if(lbIdx<0)lbIdx=0
+  showLB()
+  document.getElementById('lb').classList.add('open')
+  document.body.style.overflow='hidden'
+}
+function showLB(){
+  const el=lbVisible[lbIdx]
+  if(!el)return
+  const img=el.querySelector('img')
+  const lbImg=document.getElementById('lbImg')
+  lbImg.src=img.src
+  lbImg.onerror=()=>{lbImg.src=img.getAttribute('onerror')?.match(/['"]([^'"]+)['"]/)?.[1]||img.src}
+  document.getElementById('lbCat').textContent=el.querySelector('.masonry-cat')?.textContent||''
+  document.getElementById('lbTitle').textContent=el.dataset.title||''
+  document.getElementById('lbProj').textContent=el.dataset.proj||''
+  document.getElementById('lbCount').textContent=`${lbIdx+1} / ${lbVisible.length}`
+}
+function lbNext(){lbIdx=(lbIdx+1)%lbVisible.length;showLB()}
+function lbPrev(){lbIdx=(lbIdx-1+lbVisible.length)%lbVisible.length;showLB()}
+function closeLB(){document.getElementById('lb').classList.remove('open');document.body.style.overflow=''}
+function closeLBOutside(e){if(e.target===document.getElementById('lb'))closeLB()}
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('lb').classList.contains('open'))return
+  if(e.key==='ArrowRight')lbNext()
+  else if(e.key==='ArrowLeft')lbPrev()
+  else if(e.key==='Escape')closeLB()
+})
+
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.08,rootMargin:'0px 0px -40px 0px'})
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el))
+</script>
+</body>
+</html>

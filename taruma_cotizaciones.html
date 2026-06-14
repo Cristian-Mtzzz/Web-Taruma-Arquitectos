@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cotizaciones — Taruma Arquitectos</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#F8F6F2;--bg2:#EFECE5;--bg3:#E8E4DC;
+  --carbon:#1A1A1A;--graphite:#2D2D2D;--stone:#6B6560;
+  --terra:#C4876A;--terra-light:#D9A88A;--terra-dark:#A36A4E;
+  --white:#FFFFFF;--border:rgba(26,26,26,0.1);
+  --ease:cubic-bezier(0.25,0.46,0.45,0.94)
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--carbon);overflow-x:hidden}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.1rem 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(248,246,242,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{height:38px;width:auto;object-fit:contain;mix-blend-mode:multiply;filter:contrast(1.1)}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;letter-spacing:0.14em;color:var(--carbon);text-transform:uppercase}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-size:0.72rem;letter-spacing:0.12em;color:var(--stone);text-decoration:none;text-transform:uppercase;transition:color 0.3s}
+.nav-links a:hover{color:var(--carbon)}
+.nav-links a.active{color:var(--carbon);border-bottom:1px solid var(--terra);padding-bottom:2px}
+.nav-cta{font-size:0.72rem;letter-spacing:0.12em;padding:0.6rem 1.5rem;border:1px solid var(--terra);color:var(--terra);background:transparent;text-decoration:none;text-transform:uppercase;transition:all 0.3s}
+.nav-cta:hover{background:var(--terra);color:var(--white)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.hamburger span{display:block;width:22px;height:1px;background:var(--carbon)}
+.mob-menu{display:none;position:fixed;inset:0;background:var(--bg);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem}
+.mob-menu.open{display:flex}
+.mob-menu a{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--carbon);text-decoration:none;transition:color 0.3s}
+.mob-menu a:hover{color:var(--terra)}
+.mob-close{position:absolute;top:1.8rem;right:5%;font-size:0.75rem;letter-spacing:0.1em;color:var(--stone);cursor:pointer;background:none;border:none;text-transform:uppercase}
+
+/* HERO */
+.page-hero{padding:12rem 5% 6rem;background:var(--white);display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:flex-end}
+.breadcrumb{font-size:0.65rem;letter-spacing:0.2em;color:var(--stone);text-transform:uppercase;margin-bottom:2rem;display:flex;align-items:center;gap:0.8rem}
+.breadcrumb a{color:var(--stone);text-decoration:none;transition:color 0.3s}
+.breadcrumb a:hover{color:var(--terra)}
+.breadcrumb span{color:var(--terra)}
+.page-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,6vw,5rem);font-weight:300;line-height:1.05;color:var(--carbon)}
+.page-hero h1 em{font-style:italic;color:var(--terra)}
+.hero-right p{font-size:0.9rem;line-height:1.9;color:var(--stone);font-weight:300;margin-bottom:2rem}
+.hero-promises{display:flex;flex-direction:column;gap:0.8rem}
+.promise{display:flex;align-items:center;gap:0.8rem;font-size:0.8rem;color:var(--stone);font-weight:300}
+.promise-dot{width:6px;height:6px;border-radius:50%;background:var(--terra);flex-shrink:0}
+
+.s-label{font-size:0.68rem;letter-spacing:0.25em;color:var(--terra);text-transform:uppercase;margin-bottom:1rem;display:block}
+.s-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:300;color:var(--carbon);line-height:1.1}
+.s-title em{font-style:italic;color:var(--terra)}
+.divider{width:40px;height:1px;background:var(--terra);margin:1.5rem 0}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s var(--ease),transform 0.8s var(--ease)}
+.reveal.visible{opacity:1;transform:none}
+
+/* QUOTE FORM */
+.quote-section{background:var(--bg2);padding:7rem 5%}
+.quote-layout{display:grid;grid-template-columns:1fr 2fr;gap:6rem;align-items:start}
+
+/* SIDEBAR */
+.quote-sidebar{}
+.step-list{display:flex;flex-direction:column;gap:0;margin-top:2rem}
+.sl-item{display:flex;gap:1.2rem;padding:1.2rem 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity 0.3s}
+.sl-item:last-child{border-bottom:none}
+.sl-item.inactive{opacity:0.4}
+.sl-item.current{opacity:1}
+.sl-num{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:var(--terra);line-height:1;flex-shrink:0;width:32px}
+.sl-info{}
+.sl-title{font-size:0.8rem;font-weight:500;color:var(--carbon);letter-spacing:0.06em;margin-bottom:0.2rem}
+.sl-desc{font-size:0.72rem;color:var(--stone);font-weight:300}
+.progress-bar{height:2px;background:var(--border);margin-top:2.5rem;position:relative}
+.progress-fill{height:100%;background:var(--terra);transition:width 0.5s var(--ease);width:33%}
+.progress-label{display:flex;justify-content:space-between;margin-top:0.5rem;font-size:0.65rem;color:var(--stone);letter-spacing:0.1em;text-transform:uppercase}
+
+/* FORM PANELS */
+.quote-form-wrap{background:var(--white);padding:3rem}
+.step-panel{display:none}
+.step-panel.active{display:block}
+.panel-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--carbon);margin-bottom:0.5rem}
+.panel-sub{font-size:0.82rem;color:var(--stone);font-weight:300;margin-bottom:2rem;line-height:1.6}
+.fg{margin-bottom:1.2rem}
+.fg label{font-size:0.65rem;letter-spacing:0.18em;color:var(--stone);text-transform:uppercase;display:block;margin-bottom:0.5rem}
+.fg input,.fg textarea,.fg select{width:100%;background:var(--bg);border:1px solid var(--border);padding:0.85rem 1rem;color:var(--carbon);font-family:'Inter',sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.3s;appearance:none;border-radius:0}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--terra);background:var(--white)}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(107,101,96,0.4)}
+.fg textarea{min-height:120px;resize:vertical}
+.fg select option{background:var(--white)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:0.5rem}
+.type-opt{border:1px solid var(--border);padding:0.9rem 0.6rem;text-align:center;cursor:pointer;transition:all 0.3s;font-size:0.72rem;letter-spacing:0.08em;color:var(--stone);text-transform:uppercase}
+.type-opt:hover{border-color:var(--terra);color:var(--terra)}
+.type-opt.selected{border-color:var(--terra);background:rgba(196,135,106,0.08);color:var(--terra-dark);font-weight:500}
+.type-icon{font-size:1.2rem;display:block;margin-bottom:0.4rem}
+.range-wrap{margin-top:0.5rem}
+.range-labels{display:flex;justify-content:space-between;font-size:0.68rem;color:var(--stone);margin-bottom:0.5rem}
+input[type=range]{width:100%;accent-color:var(--terra);height:2px;cursor:pointer}
+.range-val{text-align:center;font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--terra);margin-top:0.6rem}
+.checkbox-group{display:flex;flex-direction:column;gap:0.6rem;margin-top:0.5rem}
+.cb-item{display:flex;align-items:center;gap:0.8rem;cursor:pointer;font-size:0.82rem;color:var(--stone);font-weight:300}
+.cb-item input[type=checkbox]{accent-color:var(--terra);width:16px;height:16px;cursor:pointer}
+.panel-nav{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+.btn-prev{padding:0.8rem 1.8rem;background:transparent;color:var(--stone);border:1px solid var(--border);font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all 0.3s;font-family:'Inter',sans-serif}
+.btn-prev:hover{border-color:var(--carbon);color:var(--carbon)}
+.btn-prev:disabled{opacity:0.3;cursor:default}
+.btn-next{padding:0.8rem 2rem;background:var(--carbon);color:var(--white);border:none;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:background 0.3s;font-family:'Inter',sans-serif}
+.btn-next:hover{background:var(--graphite)}
+.step-ind{font-size:0.68rem;letter-spacing:0.12em;color:var(--stone);text-transform:uppercase}
+.step-ind span{color:var(--terra)}
+
+/* SUCCESS */
+.success-panel{display:none;text-align:center;padding:4rem 2rem}
+.success-panel.show{display:block}
+.success-icon{font-size:3rem;margin-bottom:1.5rem}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--carbon);margin-bottom:0.8rem}
+.success-title em{font-style:italic;color:var(--terra)}
+.success-desc{font-size:0.88rem;color:var(--stone);line-height:1.8;font-weight:300;max-width:400px;margin:0 auto 2rem}
+.success-steps{display:flex;flex-direction:column;gap:0.6rem;text-align:left;max-width:320px;margin:0 auto 2.5rem;background:var(--bg);padding:1.5rem}
+.success-step{font-size:0.78rem;color:var(--stone);display:flex;gap:0.8rem;font-weight:300}
+.success-step strong{color:var(--carbon)}
+
+/* WHY QUOTE */
+.why-quote{background:var(--carbon);padding:7rem 5%}
+.wq-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:rgba(255,255,255,0.04);margin-top:4rem}
+.wq-item{padding:3rem 2rem;border-right:1px solid rgba(255,255,255,0.06);text-align:center}
+.wq-item:last-child{border-right:none}
+.wq-icon{font-size:1.8rem;margin-bottom:1rem;color:var(--terra-light);display:block}
+.wq-title{font-size:0.8rem;font-weight:500;letter-spacing:0.08em;color:var(--white);text-transform:uppercase;margin-bottom:0.6rem}
+.wq-desc{font-size:0.78rem;line-height:1.7;color:rgba(255,255,255,0.4);font-weight:300}
+
+footer{background:var(--graphite);color:rgba(255,255,255,0.55);padding:5rem 5% 2.5rem}
+.footer-top{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem}
+.f-brand .logo-text{color:var(--white);font-size:1.3rem;display:block;margin-bottom:1rem}
+.f-brand p{font-size:0.8rem;line-height:1.85;font-weight:300;max-width:260px}
+.f-col h4{font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--terra-light);margin-bottom:1.5rem}
+.f-col ul{list-style:none;display:flex;flex-direction:column;gap:0.65rem}
+.f-col ul a{font-size:0.8rem;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.3s}
+.f-col ul a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:2rem;display:flex;justify-content:space-between}
+.footer-bottom p{font-size:0.72rem}
+
+@media(max-width:960px){
+  .nav-links,.nav-cta{display:none}
+  .hamburger{display:flex}
+  .page-hero{grid-template-columns:1fr;gap:2rem;padding:10rem 5% 4rem}
+  .quote-layout{grid-template-columns:1fr;gap:3rem}
+  .type-grid{grid-template-columns:1fr 1fr}
+  .wq-grid{grid-template-columns:1fr 1fr}
+  .wq-item{border-right:none;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .footer-top{grid-template-columns:1fr 1fr;gap:2.5rem}
+  .form-row{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .type-grid{grid-template-columns:1fr}
+  .wq-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr}
+  .quote-form-wrap{padding:2rem 1.5rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <span class="logo-text">Taruma Arquitectos</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="nosotros.html">Nosotros</a></li>
+    <li><a href="servicios.html">Servicios</a></li>
+    <li><a href="portafolio.html">Portafolio</a></li>
+    <li><a href="procesos.html">Procesos</a></li>
+    <li><a href="galeria.html">Galería</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <a href="cotizaciones.html" class="nav-cta active">Cotizar</a>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <button class="mob-close" onclick="toggleMenu()">✕ Cerrar</button>
+  <a href="nosotros.html" onclick="toggleMenu()">Nosotros</a>
+  <a href="servicios.html" onclick="toggleMenu()">Servicios</a>
+  <a href="portafolio.html" onclick="toggleMenu()">Portafolio</a>
+  <a href="procesos.html" onclick="toggleMenu()">Procesos</a>
+  <a href="galeria.html" onclick="toggleMenu()">Galería</a>
+  <a href="blog.html" onclick="toggleMenu()">Blog</a>
+  <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
+  <a href="cotizaciones.html" onclick="toggleMenu()">Cotizar</a>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div>
+    <div class="breadcrumb"><a href="index.html">Inicio</a> › <span>Cotizaciones</span></div>
+    <h1>Solicite su <em>cotización</em></h1>
+  </div>
+  <div class="hero-right">
+    <p>Complete el formulario en 3 sencillos pasos y recibirá una propuesta personalizada en menos de 48 horas hábiles. Sin compromisos.</p>
+    <div class="hero-promises">
+      <div class="promise"><span class="promise-dot"></span>Respuesta en menos de 48 horas hábiles</div>
+      <div class="promise"><span class="promise-dot"></span>Cotización personalizada y sin costo</div>
+      <div class="promise"><span class="promise-dot"></span>Sin compromisos ni letras pequeñas</div>
+      <div class="promise"><span class="promise-dot"></span>Asesoría inicial gratuita incluida</div>
+    </div>
+  </div>
+</div>
+
+<!-- QUOTE FORM -->
+<section class="quote-section">
+  <div class="quote-layout">
+
+    <!-- SIDEBAR -->
+    <div class="reveal">
+      <span class="s-label">Su solicitud</span>
+      <h2 class="s-title">Tres <em>pasos</em></h2>
+      <div class="divider"></div>
+      <div class="step-list">
+        <div class="sl-item current" onclick="goStep(1)">
+          <div class="sl-num">01</div>
+          <div class="sl-info"><div class="sl-title">Tipo de proyecto</div><div class="sl-desc">¿Qué quiere construir o diseñar?</div></div>
+        </div>
+        <div class="sl-item inactive" id="sl2" onclick="goStep(2)">
+          <div class="sl-num">02</div>
+          <div class="sl-info"><div class="sl-title">Detalles del proyecto</div><div class="sl-desc">Área, presupuesto y descripción</div></div>
+        </div>
+        <div class="sl-item inactive" id="sl3" onclick="goStep(3)">
+          <div class="sl-num">03</div>
+          <div class="sl-info"><div class="sl-title">Sus datos de contacto</div><div class="sl-desc">Para enviarle la propuesta</div></div>
+        </div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-labels">
+        <span class="progress-label" style="font-size:0.62rem;color:var(--stone);letter-spacing:0.1em;text-transform:uppercase;margin-top:0.5rem;display:block">Paso <span id="stepLabel">1</span> de 3</span>
+      </div>
+
+      <!-- MINI INFO -->
+      <div style="margin-top:3rem;padding:1.5rem;background:var(--white);border-left:2px solid var(--terra)">
+        <div style="font-size:0.68rem;letter-spacing:0.18em;color:var(--terra);text-transform:uppercase;margin-bottom:1rem">¿Prefiere llamarnos?</div>
+        <a href="tel:+50498765432" style="font-size:1rem;color:var(--carbon);font-weight:500;text-decoration:none;display:block;margin-bottom:0.4rem">+504 9876-5432</a>
+        <a href="https://wa.me/50498765432" style="font-size:0.8rem;color:var(--terra);text-decoration:none">WhatsApp →</a>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="quote-form-wrap reveal">
+
+      <!-- STEP 1 -->
+      <div class="step-panel active" id="qp1">
+        <h3 class="panel-title">Tipo de <em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--terra)">proyecto</em></h3>
+        <p class="panel-sub">Seleccione el tipo de proyecto que mejor describe lo que necesita. Puede seleccionar más de uno si aplica.</p>
+        <div class="fg">
+          <label>Categoría del proyecto *</label>
+          <div class="type-grid">
+            <div class="type-opt" onclick="toggleType(this)"><span class="type-icon">🏠</span>Residencial</div>
+            <div class="type-opt" onclick="toggleType(this)"><span class="type-icon">🏢</span>Comercial</div>
+            <div class="type-opt" onclick="toggleType(this)"><span class="type-icon">🏛</span>Institucional</div>
+            <div class="type-opt" onclick="toggleType(this)"><span class="type-icon">🌿</span>Turístico</div>
+            <div class="type-opt" onclick="toggleType(this)"><span class="type-icon">🏙</span>Urbano</div>
+            <div class="type-opt" onclick="toggleType(this)"><span class="type-icon">🔨</span>Remodelación</div>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Servicio requerido *</label>
+          <select id="q1Servicio">
+            <option value="">Seleccione</option>
+            <option>Diseño arquitectónico completo</option>
+            <option>Construcción y supervisión de obra</option>
+            <option>Diseño + construcción (llave en mano)</option>
+            <option>Diseño de interiores</option>
+            <option>Planificación urbana</option>
+            <option>Paisajismo</option>
+            <option>Consultoría técnica</option>
+            <option>Aún no lo tengo definido</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Ubicación del proyecto *</label>
+          <input type="text" id="q1Ubicacion" placeholder="Ciudad, Departamento, Honduras">
+        </div>
+        <div class="panel-nav">
+          <button class="btn-prev" disabled>← Anterior</button>
+          <span class="step-ind">Paso <span>1</span> de 3</span>
+          <button class="btn-next" onclick="goStep(2)">Siguiente →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-panel" id="qp2">
+        <h3 class="panel-title">Detalles del <em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--terra)">proyecto</em></h3>
+        <p class="panel-sub">Cuéntenos más sobre las características de su proyecto para preparar una propuesta precisa.</p>
+        <div class="form-row">
+          <div class="fg">
+            <label>Área estimada (m²)</label>
+            <input type="number" id="q2Area" placeholder="Ej: 250">
+          </div>
+          <div class="fg">
+            <label>Número de niveles</label>
+            <select id="q2Niveles">
+              <option value="">Seleccione</option>
+              <option>1 nivel</option>
+              <option>2 niveles</option>
+              <option>3 niveles</option>
+              <option>4+ niveles</option>
+              <option>No aplica</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Presupuesto estimado (USD)</label>
+          <div class="range-wrap">
+            <div class="range-labels"><span>$5,000</span><span>$1,000,000+</span></div>
+            <input type="range" id="q2Budget" min="5000" max="1000000" step="5000" value="50000" oninput="updateBudget(this.value)">
+            <div class="range-val" id="budgetVal">$50,000</div>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Plazo deseado</label>
+          <select id="q2Plazo">
+            <option value="">Seleccione</option>
+            <option>Lo antes posible</option>
+            <option>En los próximos 3 meses</option>
+            <option>En los próximos 6 meses</option>
+            <option>Este año</option>
+            <option>El próximo año</option>
+            <option>Flexible / no definido</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Servicios adicionales de interés</label>
+          <div class="checkbox-group">
+            <label class="cb-item"><input type="checkbox"> Diseño de interiores</label>
+            <label class="cb-item"><input type="checkbox"> Paisajismo y exteriores</label>
+            <label class="cb-item"><input type="checkbox"> Renders y visualizaciones 3D</label>
+            <label class="cb-item"><input type="checkbox"> Gestión de permisos de construcción</label>
+            <label class="cb-item"><input type="checkbox"> Supervisión de obra</label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Descripción del proyecto</label>
+          <textarea id="q2Desc" placeholder="Describa brevemente su proyecto: número de habitaciones, espacios especiales, referencias de estilo, requerimientos específicos..."></textarea>
+        </div>
+        <div class="panel-nav">
+          <button class="btn-prev" onclick="goStep(1)">← Anterior</button>
+          <span class="step-ind">Paso <span>2</span> de 3</span>
+          <button class="btn-next" onclick="goStep(3)">Siguiente →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-panel" id="qp3">
+        <h3 class="panel-title">Sus datos de <em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--terra)">contacto</em></h3>
+        <p class="panel-sub">Por último, necesitamos sus datos para enviarle la propuesta y coordinar la consulta inicial gratuita.</p>
+        <div class="form-row">
+          <div class="fg"><label>Nombre *</label><input type="text" id="q3Nombre" placeholder="Su nombre"></div>
+          <div class="fg"><label>Apellido *</label><input type="text" id="q3Apellido" placeholder="Su apellido"></div>
+        </div>
+        <div class="form-row">
+          <div class="fg"><label>Correo electrónico *</label><input type="email" id="q3Correo" placeholder="correo@ejemplo.com"></div>
+          <div class="fg"><label>Teléfono / WhatsApp *</label><input type="tel" id="q3Tel" placeholder="+504 0000-0000"></div>
+        </div>
+        <div class="fg">
+          <label>¿Cómo nos conoció?</label>
+          <select id="q3Fuente">
+            <option value="">Seleccione</option>
+            <option>Instagram</option>
+            <option>Facebook</option>
+            <option>Google</option>
+            <option>Recomendación de un conocido</option>
+            <option>LinkedIn</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Disponibilidad para reunión inicial</label>
+          <select id="q3Disp">
+            <option value="">Seleccione preferencia</option>
+            <option>Lunes a viernes por la mañana</option>
+            <option>Lunes a viernes por la tarde</option>
+            <option>Sábados por la mañana</option>
+            <option>Videollamada (flexible)</option>
+            <option>Me contactan y coordinamos</option>
+          </select>
+        </div>
+        <div style="background:var(--bg2);padding:1.2rem;margin-bottom:1.5rem;border-left:2px solid rgba(196,135,106,0.3)">
+          <p style="font-size:0.78rem;color:var(--stone);font-weight:300;line-height:1.6">Al enviar este formulario, acepta que Taruma Arquitectos use su información para preparar su cotización y contactarle. No compartimos sus datos con terceros.</p>
+        </div>
+        <button style="width:100%;padding:1rem;background:var(--terra);color:var(--white);border:none;font-size:0.8rem;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;transition:background 0.3s;font-family:'Inter',sans-serif" onclick="enviarCotizacion()">Enviar solicitud de cotización</button>
+        <div class="panel-nav" style="border-top:none;padding-top:1rem">
+          <button class="btn-prev" onclick="goStep(2)">← Anterior</button>
+          <span class="step-ind">Paso <span>3</span> de 3</span>
+          <span></span>
+        </div>
+        <div class="form-fb" id="qFb" style="display:none;margin-top:1rem;padding:1rem;font-size:0.82rem;text-align:center"></div>
+      </div>
+
+      <!-- SUCCESS -->
+      <div class="success-panel" id="successPanel">
+        <div class="success-icon">✓</div>
+        <h3 class="success-title">¡Solicitud <em>recibida</em>!</h3>
+        <p class="success-desc">Hemos recibido su solicitud de cotización. Nuestro equipo la revisará y se pondrá en contacto con usted a la brevedad.</p>
+        <div class="success-steps">
+          <div class="success-step"><span>1.</span><span><strong>Revisión:</strong> Analizamos su solicitud en detalle</span></div>
+          <div class="success-step"><span>2.</span><span><strong>Contacto:</strong> Le llamamos en menos de 48 horas hábiles</span></div>
+          <div class="success-step"><span>3.</span><span><strong>Propuesta:</strong> Enviamos cotización personalizada</span></div>
+          <div class="success-step"><span>4.</span><span><strong>Reunión:</strong> Agendamos la consulta inicial gratuita</span></div>
+        </div>
+        <a href="portafolio.html" style="display:inline-block;padding:0.9rem 2rem;background:var(--carbon);color:var(--white);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;transition:background 0.3s">Ver nuestros proyectos →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why-quote">
+  <div style="text-align:center;max-width:560px;margin:0 auto 0" class="reveal">
+    <span class="s-label" style="color:var(--terra)">¿Por qué cotizar con nosotros?</span>
+    <h2 class="s-title" style="color:var(--white)">El proceso <em>más simple</em></h2>
+  </div>
+  <div class="wq-grid">
+    <div class="wq-item reveal">
+      <span class="wq-icon">⏱</span>
+      <div class="wq-title">Rápido</div>
+      <p class="wq-desc">Respuesta garantizada en menos de 48 horas hábiles con propuesta detallada.</p>
+    </div>
+    <div class="wq-item reveal">
+      <span class="wq-icon">◈</span>
+      <div class="wq-title">Personalizado</div>
+      <p class="wq-desc">Cada cotización es elaborada a medida. No enviamos presupuestos genéricos.</p>
+    </div>
+    <div class="wq-item reveal">
+      <span class="wq-icon">◇</span>
+      <div class="wq-title">Sin compromiso</div>
+      <p class="wq-desc">La consulta inicial y la cotización son completamente gratuitas y sin obligación.</p>
+    </div>
+    <div class="wq-item reveal">
+      <span class="wq-icon">◉</span>
+      <div class="wq-title">Transparente</div>
+      <p class="wq-desc">Precios claros, desglosados por etapa. Sin costos ocultos ni sorpresas.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div class="f-brand"><span class="logo-text">Taruma Arquitectos</span><p>Diseño arquitectónico responsable y soluciones constructivas para proyectos residenciales, comerciales e institucionales en Honduras.</p></div>
+    <div class="f-col"><h4>Estudio</h4><ul><li><a href="nosotros.html">Nosotros</a></li><li><a href="servicios.html">Servicios</a></li><li><a href="procesos.html">Procesos</a></li></ul></div>
+    <div class="f-col"><h4>Proyectos</h4><ul><li><a href="portafolio.html">Portafolio</a></li><li><a href="galeria.html">Galería</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+    <div class="f-col"><h4>Contacto</h4><ul>
+      <li><a href="tel:+50498765432">+504 9876-5432</a></li>
+      <li><a href="mailto:info@taruma-arquitectos.com">info@taruma-arquitectos.com</a></li>
+      <li><a href="https://www.instagram.com/taruma.arquitectos">Instagram</a></li>
+      <li><a href="https://www.facebook.com/taruma.arquitectos">Facebook</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Taruma Arquitectos. Todos los derechos reservados.</p>
+    <p>Tegucigalpa, Honduras</p>
+  </div>
+</footer>
+
+<script>
+function toggleMenu(){document.getElementById('mobMenu').classList.toggle('open')}
+
+let currentStep=1
+const fills=['33%','66%','100%']
+
+function goStep(n){
+  document.querySelectorAll('.step-panel').forEach((p,i)=>p.classList.toggle('active',i===n-1))
+  document.querySelectorAll('.sl-item').forEach((s,i)=>{
+    s.classList.toggle('current',i===n-1)
+    s.classList.toggle('inactive',i>=n)
+  })
+  document.getElementById('progressFill').style.width=fills[n-1]
+  document.getElementById('stepLabel').textContent=n
+  currentStep=n
+  document.querySelector('.quote-form-wrap').scrollIntoView({behavior:'smooth',block:'start'})
+}
+
+function toggleType(el){el.classList.toggle('selected')}
+
+function updateBudget(v){
+  const n=parseInt(v)
+  document.getElementById('budgetVal').textContent=n>=1000000?'$1,000,000+':'$'+n.toLocaleString()
+}
+
+function enviarCotizacion(){
+  const n=document.getElementById('q3Nombre').value.trim()
+  const e=document.getElementById('q3Correo').value.trim()
+  const t=document.getElementById('q3Tel').value.trim()
+  if(!n||!e||!t){
+    const fb=document.getElementById('qFb')
+    fb.style.display='block'
+    fb.style.background='rgba(220,60,60,0.08)'
+    fb.style.border='1px solid rgba(220,60,60,0.2)'
+    fb.style.color='#d44'
+    fb.textContent='Por favor complete nombre, correo y teléfono.'
+    return
+  }
+  document.getElementById('qp3').style.display='none'
+  document.getElementById('successPanel').classList.add('show')
+  document.querySelectorAll('.sl-item').forEach(s=>{s.classList.remove('inactive');s.classList.remove('current')})
+  document.getElementById('progressFill').style.width='100%'
+}
+
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.08,rootMargin:'0px 0px -40px 0px'})
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el))
+</script>
+</body>
+</html>
