@@ -1,0 +1,154 @@
+.project {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: clamp(1.75rem, 4vw, 3.5rem);
+  align-items: start;
+  padding-block: clamp(3rem, 6vw, 5rem);
+  border-top: 1px solid var(--line-dark);
+}
+
+.projectFirst {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.flip .visual {
+  order: 2;
+}
+
+.visual {
+  display: grid;
+  gap: 4px;
+}
+
+.hero {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: var(--concrete);
+  overflow: hidden;
+  cursor: zoom-in;
+  aspect-ratio: 16 / 11;
+}
+
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease);
+}
+
+.hero:hover img,
+.hero:focus-visible img {
+  transform: scale(1.03);
+}
+
+.heroHint {
+  position: absolute;
+  bottom: 0.9rem;
+  right: 0.9rem;
+  background: rgba(6, 26, 37, 0.82);
+  color: var(--vellum);
+  font-size: 0.78rem;
+  padding: 0.35rem 0.7rem;
+}
+
+.strip {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 4px;
+}
+
+.thumb {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: var(--concrete);
+  overflow: hidden;
+  cursor: zoom-in;
+  aspect-ratio: 1 / 1;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.82;
+  transition: opacity 0.3s var(--ease);
+}
+
+.thumb:hover img,
+.thumb:focus-visible img {
+  opacity: 1;
+}
+
+.more {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 26, 37, 0.72);
+  color: var(--vellum);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.title {
+  font-size: clamp(1.6rem, 2.8vw, 2.3rem);
+  font-weight: 600;
+  font-variation-settings: "wdth" var(--w-wide);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  color: var(--blueprint);
+}
+
+.desc {
+  margin-top: 1.1rem;
+  font-size: 1rem;
+  color: var(--graphite-soft);
+  max-width: 54ch;
+}
+
+.specs {
+  margin-top: 1.75rem;
+  border-top: 1px solid var(--line-dark);
+}
+
+.spec {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--line-dark);
+}
+
+.specKey {
+  font-size: 0.86rem;
+  color: var(--graphite-soft);
+}
+
+.specVal {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--blueprint);
+  text-align: right;
+}
+
+.open {
+  margin-top: 1.75rem;
+}
+
+@media (max-width: 1000px) {
+  .project {
+    grid-template-columns: 1fr;
+  }
+
+  .flip .visual {
+    order: 0;
+  }
+}

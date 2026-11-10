@@ -1,0 +1,247 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  color: var(--vellum);
+  transition: background 0.35s var(--ease), border-color 0.35s var(--ease),
+    transform 0.35s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+
+/* Se retira al bajar para dejar ver la obra, y vuelve al subir */
+.navOculta {
+  transform: translateY(-100%);
+}
+
+.navScrolled {
+  background: rgba(6, 26, 37, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom-color: var(--line-light);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-block: 1.15rem;
+  transition: padding 0.35s var(--ease);
+}
+
+.navScrolled .inner {
+  padding-block: 0.8rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+/* La marca escala con el ancho. Sin esto, a 390px no cabía junto al botón de
+   menú: .brand no puede encogerse y lo empujaba fuera de pantalla. */
+.brandName {
+  font-size: clamp(0.8rem, 3.4vw, 1.05rem);
+  white-space: nowrap;
+}
+
+/* El isotipo encoge junto con la barra al hacer scroll.
+   width:auto conserva la proporción cuando el alto cambia. */
+.brandMark {
+  height: clamp(28px, 7vw, 36px);
+  width: auto;
+  flex-shrink: 0;
+  transition: height 0.35s var(--ease);
+}
+
+.navScrolled .brandMark {
+  height: clamp(26px, 6vw, 30px);
+}
+
+.panelMark {
+  height: 32px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.panelBrand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 1.65rem;
+  list-style: none;
+}
+
+.link {
+  position: relative;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: rgba(237, 238, 234, 0.74);
+  text-decoration: none;
+  padding-block: 0.35rem;
+  transition: color 0.2s var(--ease);
+}
+
+.link:hover {
+  color: var(--vellum);
+}
+
+.linkActive {
+  color: var(--vellum);
+}
+
+.linkActive::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: var(--accent);
+}
+
+.cta {
+  flex-shrink: 0;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.85rem;
+}
+
+.burger {
+  border-radius: var(--radius-control);
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0.6rem;
+  border: 1px solid rgba(237, 238, 234, 0.3);
+  background: none;
+  cursor: pointer;
+}
+
+.burger span {
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  background: var(--vellum);
+}
+
+/* Panel móvil */
+.panel {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  background: var(--blueprint-deep);
+  /* El panel cuelga fuera de .nav, así que no hereda su color: sin esto el
+     nombre del estudio salía en grafito del body, ilegible sobre el azul. */
+  color: var(--vellum);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem var(--gutter) 2.5rem;
+  /* Respeta el notch y la barra de gestos en pantalla completa */
+  padding-top: max(1.5rem, env(safe-area-inset-top));
+  padding-bottom: max(2.5rem, env(safe-area-inset-bottom));
+  padding-left: max(var(--gutter), env(safe-area-inset-left));
+  padding-right: max(var(--gutter), env(safe-area-inset-right));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.panelTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 2rem;
+}
+
+.panelClose {
+  border: 1px solid rgba(237, 238, 234, 0.3);
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--vellum);
+  padding: 0.55rem 1rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.panelLinks {
+  list-style: none;
+  border-top: 1px solid var(--line-light);
+}
+
+.panelLinks li {
+  border-bottom: 1px solid var(--line-light);
+}
+
+.panelLink {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.05rem 0;
+  font-size: 1.45rem;
+  font-weight: 600;
+  font-variation-settings: "wdth" var(--w-wide);
+  color: var(--vellum);
+  text-decoration: none;
+}
+
+.panelLink span {
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-variation-settings: "wdth" 100;
+  color: rgba(237, 238, 234, 0.58);
+}
+
+.panelCta {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+/* Pantalla baja (teléfono en horizontal): en una sola columna solo cabían
+   cuatro enlaces y había que desplazarse para llegar al resto. */
+@media (max-height: 560px) {
+  .panelTop {
+    padding-bottom: 1.1rem;
+  }
+
+  .panelLinks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2.5rem;
+  }
+
+  .panelLink {
+    font-size: 1.1rem;
+    padding: 0.55rem 0;
+  }
+
+  .panelCta {
+    margin-top: 1.1rem;
+  }
+}
+
+@media (max-width: 1080px) {
+  .links {
+    display: none;
+  }
+
+  /* .nav .cta y no solo .cta: el botón lleva también la clase global .btn,
+     que trae display:inline-flex con la MISMA especificidad (0,1,0). Con
+     empate decide el orden de carga, y globals.css gana, así que el botón se
+     quedaba visible y se desbordaba en móvil. */
+  .nav .cta {
+    display: none;
+  }
+
+  .burger {
+    display: flex;
+  }
+}

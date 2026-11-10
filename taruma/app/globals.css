@@ -1,0 +1,740 @@
+/* =========================================================
+   Taruma Arquitectos — sistema de diseño
+   Concepto: la hoja de planos. Cianotipo, hormigón y
+   señalización de obra.
+   ========================================================= */
+
+:root {
+  /* Color */
+  --blueprint: #0b2b3c;
+  --blueprint-deep: #061a25;
+  --blueprint-mid: #14455c;
+  --vellum: #edeeea;
+  --vellum-warm: #e3e5df;
+  --concrete: #c7c9c4;
+  --concrete-dark: #717874;
+  --graphite: #3a3f41;
+  --graphite-soft: #5d6467;
+  --white: #ffffff;
+
+  /* Acento: azul de cianotipo, en tres tonos. Cada uno cumple un requisito de
+     contraste distinto, por eso no se pueden fusionar:
+
+     --accent      Estructura (reglas, activos, foco, subrayados). Es el único
+                   que sirve sobre fondo CLARO y OSCURO a la vez:
+                   3.3:1 vs blanco · 4.4:1 vs --blueprint
+     --accent-lift Relleno de la CTA sobre fondo OSCURO, con texto azul profundo
+                   encima (nunca blanco: daría 2.7:1):
+                   5.5:1 vs --blueprint · 6.3:1 vs --blueprint-deep
+     --accent-ink  Relleno de la CTA sobre fondo CLARO, con texto blanco:
+                   7:1 vs blanco                                              */
+  --accent: #3e96c0;
+  --accent-lift: #4fa8cf;
+  --accent-lift-hover: #63b6da;
+  --accent-ink: #1f5f80;
+
+  --line-dark: rgba(11, 43, 60, 0.16);
+  --line-light: rgba(237, 238, 234, 0.18);
+
+  /* Tipografía */
+  /* El eje wdth de Archivo va de 62 a 125: no exceder ese rango */
+  --w-normal: 100;
+  --w-wide: 116;
+  --w-xwide: 125;
+
+  /* Ritmo */
+  --shell: 1320px;
+  --gutter: clamp(1.25rem, 5vw, 4.5rem);
+  --band: clamp(4.5rem, 9vw, 9rem);
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* --- Superficie de los controles ---------------------------------------
+     El radio va SOLO en lo que se toca (botones, campos, fichas de opción).
+     La estructura —bandas, láminas, imágenes, cuadro de rotulación— se queda
+     en 0, para que el radio signifique "esto es interactivo" en lugar de ser
+     un acabado uniforme.
+     Las sombras van teñidas de azul tinta, no de gris neutro: sobre esta
+     paleta un gris neutro se ve sucio.                                      */
+  --radius-control: 4px;
+
+  --edge-light: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  --edge-light-strong: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+  /* Elevación sobre fondo claro: contacto + ambiente */
+  --lift-1: 0 1px 2px rgba(6, 26, 37, 0.14),
+    0 3px 6px -1px rgba(6, 26, 37, 0.1), 0 8px 18px -6px rgba(6, 26, 37, 0.16);
+  --lift-2: 0 1px 2px rgba(6, 26, 37, 0.16),
+    0 5px 10px -2px rgba(6, 26, 37, 0.14),
+    0 14px 26px -8px rgba(6, 26, 37, 0.24);
+
+  /* Sobre fondo oscuro una sombra azul no se ve: hace falta negro y más borde */
+  --lift-dark-1: 0 1px 2px rgba(0, 0, 0, 0.3),
+    0 6px 16px -6px rgba(0, 0, 0, 0.45);
+  --lift-dark-2: 0 2px 4px rgba(0, 0, 0, 0.34),
+    0 12px 24px -8px rgba(0, 0, 0, 0.55);
+
+  --press: inset 0 2px 5px rgba(6, 26, 37, 0.26);
+
+  /* Luz cenital sobre el relleno: da superficie, no es un lavado decorativo */
+  --sheen: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0) 62%
+  );
+
+  /* Variables de CONTEXTO. Las bandas oscuras las redefinen, así los botones
+     se adaptan solos y no hace falta duplicar selectores por cada contexto. */
+  --ctx-lift: var(--lift-1);
+  --ctx-lift-hover: var(--lift-2);
+  --ctx-edge: var(--edge-light);
+}
+
+.band-dark,
+.band-deep,
+.pagehead,
+.on-dark {
+  --ctx-lift: var(--lift-dark-1);
+  --ctx-lift-hover: var(--lift-dark-2);
+  --ctx-edge: var(--edge-light-strong);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background: var(--vellum);
+  color: var(--graphite);
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65;
+  font-variation-settings: "wdth" var(--w-normal);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--blueprint-deep);
+}
+
+/* ---------- Estructura ---------- */
+
+.shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  /* En horizontal sobre un teléfono con notch, el recorte lateral se comería
+     el contenido. Donde no hay notch, env() vale 0 y manda --gutter. */
+  padding-left: max(var(--gutter), env(safe-area-inset-left));
+  padding-right: max(var(--gutter), env(safe-area-inset-right));
+}
+
+.band {
+  padding-block: var(--band);
+}
+
+.band-dark {
+  background: var(--blueprint);
+  color: var(--vellum);
+}
+
+.band-deep {
+  background: var(--blueprint-deep);
+  color: var(--vellum);
+}
+
+.band-paper {
+  background: var(--white);
+}
+
+.band-vellum {
+  background: var(--vellum-warm);
+}
+
+/* Retícula estructural: referencia de plano, no decoración */
+.gridlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--line-light) 0 1px,
+    transparent 1px 25%
+  );
+  opacity: 0.5;
+}
+
+/* ---------- Tipografía ---------- */
+
+.display {
+  font-variation-settings: "wdth" var(--w-xwide);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  font-size: clamp(2.6rem, 7.4vw, 6rem);
+  text-wrap: balance;
+}
+
+.heading {
+  font-variation-settings: "wdth" var(--w-wide);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  font-size: clamp(1.9rem, 4vw, 3.1rem);
+  text-wrap: balance;
+}
+
+.subheading {
+  font-variation-settings: "wdth" var(--w-wide);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-size: clamp(1.3rem, 2.2vw, 1.75rem);
+}
+
+.lede {
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  line-height: 1.6;
+  max-width: 48ch;
+  color: var(--graphite-soft);
+  font-weight: 400;
+}
+
+.band-dark .lede,
+.band-deep .lede {
+  color: rgba(237, 238, 234, 0.78);
+}
+
+.prose {
+  max-width: 68ch;
+}
+
+.prose p + p {
+  margin-top: 1.1em;
+}
+
+.wordmark {
+  font-variation-settings: "wdth" var(--w-xwide);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1;
+  text-decoration: none;
+}
+
+/* ---------- Reglas y marcas ---------- */
+
+.rule {
+  height: 1px;
+  border: 0;
+  background: var(--line-dark);
+}
+
+.band-dark .rule,
+.band-deep .rule {
+  background: var(--line-light);
+}
+
+.accent-rule {
+  width: 56px;
+  height: 3px;
+  background: var(--accent);
+  border: 0;
+}
+
+/* ---------- Botones ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.95rem 1.9rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background-color: transparent;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-variation-settings: "wdth" 105;
+  letter-spacing: 0.005em;
+  text-decoration: none;
+  cursor: pointer;
+  /* Se anima background-color, no el atajo: así el degradado no se reinicia */
+  transition: background-color 0.18s var(--ease), color 0.18s var(--ease),
+    border-color 0.18s var(--ease), box-shadow 0.18s var(--ease),
+    transform 0.18s var(--ease);
+}
+
+/* Rellenos: superficie con luz cenital y elevación.
+   La elevación marca jerarquía, así que la llevan solo los botones rellenos. */
+.btn-accent,
+.btn-solid {
+  background-image: var(--sheen);
+  box-shadow: var(--ctx-edge), var(--ctx-lift);
+}
+
+.btn-accent:hover,
+.btn-solid:hover {
+  box-shadow: var(--ctx-edge), var(--ctx-lift-hover);
+  transform: translateY(-1px);
+}
+
+.btn-accent {
+  background-color: var(--accent-ink);
+  color: var(--white);
+}
+
+.btn-accent:hover {
+  background-color: #2a7ba3;
+}
+
+/* Sobre fondo oscuro la CTA se aclara y el texto se oscurece: el relleno azul
+   claro destaca contra la banda y la etiqueta en azul profundo queda legible.
+   .on-dark marca los contextos oscuros que no son bandas (héroe, navegación). */
+.band-dark .btn-accent,
+.band-deep .btn-accent,
+.pagehead .btn-accent,
+.on-dark .btn-accent {
+  background-color: var(--accent-lift);
+  color: var(--blueprint-deep);
+}
+
+.band-dark .btn-accent:hover,
+.band-deep .btn-accent:hover,
+.pagehead .btn-accent:hover,
+.on-dark .btn-accent:hover {
+  background-color: var(--accent-lift-hover);
+}
+
+.btn-solid {
+  background-color: var(--blueprint);
+  color: var(--vellum);
+}
+
+.btn-solid:hover {
+  background-color: var(--blueprint-mid);
+}
+
+/* Contorno: secundario, por eso va plano en reposo y solo gana cuerpo al pasar */
+.btn-line {
+  border-color: var(--line-dark);
+  color: var(--graphite);
+}
+
+.btn-line:hover {
+  border-color: var(--blueprint);
+  background-color: var(--blueprint);
+  background-image: var(--sheen);
+  color: var(--vellum);
+  box-shadow: var(--ctx-edge), var(--ctx-lift);
+  transform: translateY(-1px);
+}
+
+.band-dark .btn-line,
+.band-deep .btn-line,
+.pagehead .btn-line,
+.on-dark .btn-line {
+  border-color: rgba(237, 238, 234, 0.45);
+  color: var(--vellum);
+}
+
+/* El contorno se rellena de azul profundo, no de papel: así queda claramente
+   por debajo de la CTA primaria, que es la que lleva el azul claro. */
+.band-dark .btn-line:hover,
+.band-deep .btn-line:hover,
+.pagehead .btn-line:hover,
+.on-dark .btn-line:hover {
+  background-color: var(--accent-ink);
+  border-color: var(--accent-ink);
+  color: var(--vellum);
+}
+
+/* Al pulsar, el botón se hunde. Va DESPUÉS de todos los :hover: al hacer clic
+   el cursor también está encima, y con igual especificidad gana el último. */
+.btn-accent:active,
+.btn-solid:active,
+.btn-line:active {
+  transform: translateY(0);
+  box-shadow: var(--press);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background-image: none;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Un botón inhabilitado no se eleva ni se hunde */
+.btn:disabled:hover,
+.btn:disabled:active {
+  box-shadow: none;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover,
+  .btn:active {
+    transform: none;
+  }
+}
+
+/* Enlace de texto con subrayado creciente */
+.link {
+  display: inline-block;
+  color: inherit;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding-bottom: 2px;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 28px 2px;
+  transition: background-size 0.3s var(--ease);
+}
+
+.link:hover {
+  background-size: 100% 2px;
+}
+
+/* ---------- Cuadro de rotulación ---------- */
+
+.titleblock {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line-light);
+}
+
+.titleblock > div {
+  padding: 1.5rem 1.35rem;
+  border-right: 1px solid var(--line-light);
+}
+
+.titleblock > div:last-child {
+  border-right: 0;
+}
+
+.tb-key {
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: rgba(237, 238, 234, 0.74);
+  margin-bottom: 0.3rem;
+}
+
+.tb-val {
+  display: block;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 600;
+  font-variation-settings: "wdth" var(--w-wide);
+  line-height: 1.1;
+  color: var(--vellum);
+}
+
+/* ---------- Encabezado de página ---------- */
+
+.pagehead {
+  position: relative;
+  background: var(--blueprint);
+  color: var(--vellum);
+  overflow: hidden;
+  padding-top: clamp(7rem, 12vw, 10rem);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.pagehead-crumb {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.85rem;
+  color: rgba(237, 238, 234, 0.74);
+  margin-bottom: 1.4rem;
+}
+
+.pagehead-crumb a {
+  text-decoration: none;
+}
+
+.pagehead-crumb a:hover {
+  color: var(--accent);
+}
+
+.pagehead-title {
+  color: var(--white);
+  max-width: 24ch;
+}
+
+.pagehead-lede {
+  margin-top: 1.2rem;
+}
+
+/* ---------- Utilidades ---------- */
+
+.stack-sm > * + * {
+  margin-top: 0.75rem;
+}
+
+.stack > * + * {
+  margin-top: 1.5rem;
+}
+
+.stack-lg > * + * {
+  margin-top: 3rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Enlace de salto: oculto hasta recibir el foco por teclado */
+.skip {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 300;
+  transform: translateY(-200%);
+  padding: 0.7rem 1.2rem;
+  background: var(--accent);
+  color: var(--blueprint-deep);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s var(--ease);
+}
+
+.skip:focus {
+  transform: none;
+}
+
+/* ---------- Revelado al hacer scroll ----------
+
+   Hecho solo con CSS, con una línea de tiempo de scroll. No hay JavaScript ni
+   observador, y sobre todo no se toca DOM que React controla: mutarlo desde
+   fuera provocaba errores de hidratación, porque React encontraba clases y
+   estilos que el servidor nunca emitió.
+
+   El héroe y los encabezados de página quedan fuera a propósito: ya están en
+   pantalla al cargar y el titular tiene que leerse de inmediato. Por eso el
+   selector solo toma los hijos directos de `.shell` dentro de `.band`.
+
+   El rango termina en `cover` y no en `entry` porque un bloque más alto que la
+   ventana nunca llega a "entrar del todo", y con `entry 100%` se quedaría a
+   medio animar.
+
+   Si el navegador no soporta animation-timeline, @supports no aplica nada y el
+   contenido se ve sin animación. */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .band .shell > * {
+      animation: revelar linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+
+    /* Escalonado: los bloques siguientes terminan un poco más tarde */
+    .band .shell > *:nth-child(2) {
+      animation-range: entry 0% cover 30%;
+    }
+
+    .band .shell > *:nth-child(n + 3) {
+      animation-range: entry 0% cover 38%;
+    }
+
+    /* En dos columnas cada lado entra desde su propio lado. Solo donde de
+       verdad hay dos columnas: apiladas en móvil, el desplazamiento lateral
+       no aportaría nada. */
+    @media (min-width: 1001px) {
+      .band .shell.split-reveal > *:first-child {
+        animation-name: revelar-izquierda;
+      }
+
+      .band .shell.split-reveal > *:last-child {
+        animation-name: revelar-derecha;
+      }
+    }
+
+    /* Listas muy altas quedan fuera. El rango va en porcentaje del propio
+       elemento, así que una retícula de miles de píxeles comparte una sola
+       opacidad y tarda cientos de píxeles de scroll en llegar al 100%: justo
+       las primeras filas, las que se están mirando, se ven apagadas.
+       Medido: con 2500px de alto no llega a opacidad plena hasta ~736px. */
+    .band .shell.sin-revelado > * {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    /* La regla de acento se dibuja al entrar */
+    .accent-rule {
+      animation: trazar linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 28%;
+    }
+  }
+}
+
+@keyframes revelar {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes revelar-izquierda {
+  from {
+    opacity: 0;
+    transform: translate3d(-28px, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes revelar-derecha {
+  from {
+    opacity: 0;
+    transform: translate3d(28px, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes trazar {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 56px;
+    opacity: 1;
+  }
+}
+
+/* ---------- Movimiento ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    /* También el retardo: sin esto, un elemento que arranca en opacity:0 con
+       `animation-delay` se queda invisible todo ese tiempo aunque la animación
+       dure cero. Pasaba con el titular del héroe. */
+    animation-delay: 0s !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Responsivo ---------- */
+
+/* Teléfonos pequeños: se aprietan el ritmo vertical y los laterales, y la
+   escala tipográfica baja un escalón más de lo que daría el clamp por sí solo. */
+@media (max-width: 480px) {
+  :root {
+    --gutter: 1.1rem;
+    --band: 3.5rem;
+  }
+
+  .display {
+    font-size: clamp(2.1rem, 10.5vw, 2.9rem);
+    letter-spacing: -0.015em;
+  }
+
+  .heading {
+    font-size: clamp(1.6rem, 7.5vw, 2.1rem);
+  }
+
+  .lede {
+    font-size: 1rem;
+  }
+
+  .titleblock > div {
+    padding: 1.05rem 0.9rem;
+  }
+
+  .pagehead {
+    padding-top: 6.5rem;
+  }
+}
+
+/* En pantalla táctil los controles pequeños necesitan más superficie */
+@media (pointer: coarse) {
+  .btn {
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 760px) {
+  .titleblock {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .titleblock > div:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .titleblock > div:nth-child(n + 3) {
+    border-top: 1px solid var(--line-light);
+  }
+}

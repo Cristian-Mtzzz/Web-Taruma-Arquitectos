@@ -1,0 +1,627 @@
+/* ===== Héroe: lámina de planos ===== */
+
+.hero {
+  position: relative;
+  background: var(--blueprint);
+  color: var(--vellum);
+  overflow: hidden;
+}
+
+.heroBody {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  min-height: min(88vh, 820px);
+  /* svh = viewport pequeño: la altura con las barras del navegador visibles.
+     Con vh, al aparecer o esconderse la barra de direcciones (o al abrirse el
+     teclado) el héroe daba un salto de alto. Los navegadores sin svh se
+     quedan con la línea anterior. */
+  min-height: min(88svh, 820px);
+  align-items: stretch;
+}
+
+.heroText {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(7.5rem, 11vw, 9.5rem) clamp(2rem, 4vw, 3.5rem)
+    clamp(3rem, 5vw, 4rem) var(--gutter);
+  z-index: 2;
+}
+
+.heroEyebrow {
+  font-size: 0.9rem;
+  color: rgba(237, 238, 234, 0.74);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeIn 0.6s 0.1s var(--ease) forwards;
+}
+
+.heroTitle {
+  color: var(--white);
+  max-width: 17ch;
+  opacity: 0;
+  animation: riseIn 0.8s 0.2s var(--ease) forwards;
+}
+
+.heroDesc {
+  margin-top: 1.6rem;
+  max-width: 44ch;
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  color: rgba(237, 238, 234, 0.75);
+  opacity: 0;
+  animation: riseIn 0.8s 0.4s var(--ease) forwards;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 2.4rem;
+  opacity: 0;
+  animation: riseIn 0.8s 0.55s var(--ease) forwards;
+}
+
+.heroFigure {
+  position: relative;
+  overflow: hidden;
+  min-height: 420px;
+}
+
+.heroFigure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: settle 1.4s var(--ease) forwards;
+}
+
+.heroFigure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    var(--blueprint) 0%,
+    rgba(11, 43, 60, 0.25) 42%,
+    transparent 70%
+  );
+}
+
+.heroCaption {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 2;
+  text-align: right;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.78);
+  background: rgba(6, 26, 37, 0.6);
+  backdrop-filter: blur(4px);
+  padding: 0.6rem 0.9rem;
+  border-left: 2px solid var(--accent);
+}
+
+.heroCaption strong {
+  display: block;
+  font-weight: 600;
+  color: var(--white);
+}
+
+/* Cuadro de rotulación */
+.heroBlock {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  animation: fadeIn 0.7s 0.75s var(--ease) forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes settle {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Movimiento diferencial del héroe: la imagen se desplaza más despacio que la
+   página al hacer scroll, y al cargar hace un acercamiento lento.
+
+   Son dos animaciones a la vez sobre el mismo elemento, así que NO pueden
+   animar las dos `transform`: la segunda ganaría. Cada una mueve su propia
+   propiedad personalizada y el transform las compone. */
+@property --heroY {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --heroZoom {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .heroFigure img {
+      transform: translate3d(0, var(--heroY), 0) scale(var(--heroZoom));
+      animation: heroAcerca 1.6s var(--ease) forwards, heroDeriva linear both;
+      animation-timeline: auto, view();
+      animation-range: normal, cover 0% cover 100%;
+    }
+  }
+}
+
+@keyframes heroAcerca {
+  from {
+    --heroZoom: 1.14;
+  }
+  to {
+    --heroZoom: 1.06;
+  }
+}
+
+@keyframes heroDeriva {
+  from {
+    --heroY: -4%;
+  }
+  to {
+    --heroY: 6%;
+  }
+}
+
+/* ===== Especialidades ===== */
+
+.specialties {
+  background: var(--accent);
+  color: var(--blueprint-deep);
+  padding-block: 1.1rem;
+  overflow: hidden;
+}
+
+.specialtiesTrack {
+  display: flex;
+  gap: 3rem;
+  white-space: nowrap;
+  width: max-content;
+  animation: slide 34s linear infinite;
+}
+
+.specialtiesTrack span {
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-variation-settings: "wdth" 112;
+}
+
+@keyframes slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .specialtiesTrack {
+    animation: none;
+    flex-wrap: wrap;
+    white-space: normal;
+    width: auto;
+    gap: 1rem 2rem;
+  }
+}
+
+/* ===== Estudio ===== */
+
+.studio {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: center;
+}
+
+.studioFigure {
+  position: relative;
+}
+
+.studioFigure img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.studioStamp {
+  position: absolute;
+  bottom: -1px;
+  left: -1px;
+  background: var(--blueprint);
+  color: var(--vellum);
+  padding: 1.1rem 1.4rem;
+  max-width: 62%;
+}
+
+.studioStampVal {
+  display: block;
+  font-size: 1.9rem;
+  font-weight: 600;
+  font-variation-settings: "wdth" var(--w-wide);
+  line-height: 1;
+}
+
+.studioStampKey {
+  display: block;
+  font-size: 0.8rem;
+  color: rgba(237, 238, 234, 0.75);
+  margin-top: 0.3rem;
+}
+
+.pillars {
+  margin-top: 2.25rem;
+  border-top: 1px solid var(--line-dark);
+}
+
+.pillar {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 1.5rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--line-dark);
+}
+
+.pillarName {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--blueprint);
+}
+
+.pillarText {
+  font-size: 0.95rem;
+  color: var(--graphite-soft);
+}
+
+/* ===== Servicios ===== */
+
+.sectionHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem 2rem;
+  margin-bottom: clamp(2rem, 4vw, 3.25rem);
+}
+
+.sectionHead p {
+  max-width: 44ch;
+}
+
+.servicesList {
+  border-top: 1px solid var(--line-dark);
+}
+
+.serviceRow {
+  display: grid;
+  grid-template-columns: minmax(14rem, 22rem) 1fr auto;
+  gap: 1rem 2.5rem;
+  align-items: baseline;
+  padding: 1.6rem 0;
+  border-bottom: 1px solid var(--line-dark);
+  text-decoration: none;
+  transition: padding-left 0.3s var(--ease), background 0.3s var(--ease);
+}
+
+.serviceRow:hover {
+  padding-left: 1rem;
+  background: var(--vellum-warm);
+}
+
+.serviceName {
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+  font-weight: 600;
+  font-variation-settings: "wdth" var(--w-wide);
+  color: var(--blueprint);
+}
+
+.serviceText {
+  font-size: 0.95rem;
+  color: var(--graphite-soft);
+  max-width: 54ch;
+}
+
+.serviceGo {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--concrete-dark);
+  transition: color 0.2s var(--ease);
+}
+
+.serviceRow:hover .serviceGo {
+  color: var(--blueprint);
+}
+
+/* ===== Obra destacada ===== */
+
+.workGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.workCard {
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  background: var(--concrete);
+  min-height: 300px;
+  display: block;
+}
+
+.workCard:first-child {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.workCard:first-child .workImg {
+  min-height: 600px;
+}
+
+.workImg {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease);
+}
+
+.workCard:hover .workImg,
+.workCard:focus-visible .workImg {
+  transform: scale(1.035);
+}
+
+.workMeta {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 1.4rem;
+  background: linear-gradient(
+    to top,
+    rgba(6, 26, 37, 0.94),
+    rgba(6, 26, 37, 0.6) 55%,
+    transparent
+  );
+  color: var(--vellum);
+}
+
+.workCat {
+  font-size: 0.8rem;
+  color: var(--accent-lift);
+  text-shadow: 0 1px 4px rgba(6, 26, 37, 0.95);
+  margin-bottom: 0.25rem;
+}
+
+.workName {
+  font-size: clamp(1.05rem, 1.6vw, 1.4rem);
+  font-weight: 600;
+  font-variation-settings: "wdth" var(--w-wide);
+  line-height: 1.15;
+  color: var(--white);
+}
+
+.workPlace {
+  font-size: 0.85rem;
+  color: rgba(237, 238, 234, 0.7);
+  margin-top: 0.2rem;
+}
+
+/* ===== Cita ===== */
+
+.quoteBand {
+  position: relative;
+  overflow: hidden;
+}
+
+.quote {
+  position: relative;
+  max-width: 44ch;
+  font-size: clamp(1.5rem, 3.4vw, 2.6rem);
+  font-weight: 600;
+  font-variation-settings: "wdth" var(--w-wide);
+  line-height: 1.22;
+  letter-spacing: -0.015em;
+  color: var(--white);
+}
+
+.quoteWho {
+  position: relative;
+  display: block;
+  margin-top: 1.75rem;
+  font-size: 0.9rem;
+  font-style: normal;
+  color: rgba(237, 238, 234, 0.74);
+}
+
+/* ===== Noticias ===== */
+
+.newsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line-dark);
+  border: 1px solid var(--line-dark);
+}
+
+.newsItem {
+  background: var(--white);
+  padding: 1.9rem 1.6rem;
+}
+
+.newsWhen {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--blueprint);
+  padding-bottom: 0.7rem;
+  margin-bottom: 0.9rem;
+  border-bottom: 2px solid var(--accent);
+  width: fit-content;
+}
+
+.newsText {
+  font-size: 0.98rem;
+  color: var(--graphite-soft);
+}
+
+/* ===== Cierre ===== */
+
+.closer {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+
+.closerActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 2rem;
+}
+
+.closerAside {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.6rem;
+}
+
+.closerAside dt {
+  font-size: 0.85rem;
+  color: rgba(237, 238, 234, 0.72);
+}
+
+.closerAside dd {
+  font-size: 1.15rem;
+  font-weight: 600;
+  font-variation-settings: "wdth" var(--w-wide);
+  color: var(--vellum);
+  margin-bottom: 1.1rem;
+}
+
+.closerAside dd:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== Responsivo ===== */
+
+@media (max-width: 1000px) {
+  .heroBody {
+    grid-template-columns: 1fr;
+  }
+
+  .heroText {
+    padding: clamp(6.5rem, 18vw, 8rem) var(--gutter) 2.5rem;
+  }
+
+  .heroFigure {
+    min-height: 340px;
+    order: 2;
+  }
+
+  .heroFigure::after {
+    background: linear-gradient(
+      to top,
+      rgba(11, 43, 60, 0.55),
+      transparent 60%
+    );
+  }
+
+  .studio,
+  .closer {
+    grid-template-columns: 1fr;
+  }
+
+  .workGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .workCard:first-child {
+    grid-column: span 2;
+    grid-row: auto;
+  }
+
+  .workCard:first-child .workImg {
+    min-height: 340px;
+  }
+
+  .newsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .serviceRow {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .serviceGo {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .workGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .workCard:first-child {
+    grid-column: auto;
+  }
+
+  .pillar {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .studioStamp {
+    position: static;
+    max-width: none;
+  }
+}
+
+/* Teléfonos pequeños */
+@media (max-width: 480px) {
+  .heroActions,
+  .closerActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .heroFigure {
+    min-height: 260px;
+  }
+
+  .heroCaption {
+    right: 1rem;
+    bottom: 1rem;
+    font-size: 0.78rem;
+  }
+
+  .pillar {
+    gap: 0.25rem;
+  }
+
+  .newsItem {
+    padding: 1.5rem 1.2rem;
+  }
+}

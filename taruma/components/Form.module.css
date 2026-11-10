@@ -1,0 +1,285 @@
+.field {
+  display: block;
+  margin-bottom: 1.4rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--blueprint);
+  margin-bottom: 0.45rem;
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--graphite-soft);
+}
+
+.hint {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--graphite-soft);
+  margin-top: 0.4rem;
+}
+
+.control {
+  width: 100%;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid var(--line-dark);
+  border-radius: var(--radius-control);
+  background: var(--white);
+  font-size: 0.98rem;
+  /* Hundido, al revés que los botones: un campo recibe, no sobresale */
+  box-shadow: inset 0 1px 2px rgba(6, 26, 37, 0.06);
+  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+
+.control:hover {
+  border-color: var(--concrete-dark);
+}
+
+.control:focus {
+  outline: none;
+  border-color: var(--accent-ink);
+  box-shadow: inset 0 1px 2px rgba(6, 26, 37, 0.04),
+    0 0 0 3px rgba(79, 168, 207, 0.32);
+}
+
+select.control {
+  appearance: none;
+  background-image: linear-gradient(
+      45deg,
+      transparent 50%,
+      var(--graphite) 50%
+    ),
+    linear-gradient(135deg, var(--graphite) 50%, transparent 50%);
+  background-position: calc(100% - 1.15rem) 1.25rem,
+    calc(100% - 0.8rem) 1.25rem;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 2.5rem;
+}
+
+textarea.control {
+  min-height: 9rem;
+  resize: vertical;
+}
+
+.control[aria-invalid="true"] {
+  border-color: #b3321d;
+}
+
+.error {
+  display: block;
+  font-size: 0.85rem;
+  color: #b3321d;
+  margin-top: 0.4rem;
+  font-weight: 500;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1.25rem;
+}
+
+/* Opciones seleccionables en retícula */
+.optionGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+.option {
+  padding: 0.95rem 1rem;
+  border: 1px solid var(--line-dark);
+  border-radius: var(--radius-control);
+  background-color: var(--white);
+  font-size: 0.93rem;
+  font-weight: 500;
+  color: var(--graphite);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.18s var(--ease),
+    background-color 0.18s var(--ease), color 0.18s var(--ease),
+    box-shadow 0.18s var(--ease), transform 0.18s var(--ease);
+}
+
+.option:hover {
+  border-color: var(--concrete-dark);
+  box-shadow: var(--lift-1);
+  transform: translateY(-1px);
+}
+
+/* La opción elegida se hunde: queda claro que está fijada, no flotando */
+.optionActive {
+  border-color: var(--blueprint);
+  background-color: var(--blueprint);
+  background-image: var(--sheen);
+  color: var(--vellum);
+  font-weight: 600;
+  box-shadow: var(--edge-light), var(--press);
+  transform: none;
+}
+
+.optionActive:hover {
+  border-color: var(--blueprint);
+  box-shadow: var(--edge-light), var(--press);
+  transform: none;
+}
+
+/* Casillas */
+.checks {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.check input {
+  margin-top: 0.25rem;
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: var(--blueprint);
+  flex-shrink: 0;
+}
+
+/* Rango */
+.rangeHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.rangeValue {
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-variation-settings: "wdth" var(--w-wide);
+  color: var(--blueprint);
+}
+
+.range {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.rangeScale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--graphite-soft);
+  margin-top: 0.3rem;
+}
+
+/* Panel de éxito */
+.success {
+  border: 1px solid var(--line-dark);
+  border-top: 3px solid var(--accent);
+  background: var(--white);
+  padding: clamp(1.75rem, 4vw, 3rem);
+}
+
+.successTitle {
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  font-weight: 600;
+  font-variation-settings: "wdth" var(--w-wide);
+  color: var(--blueprint);
+  line-height: 1.15;
+}
+
+.successText {
+  margin-top: 0.9rem;
+  color: var(--graphite-soft);
+  max-width: 58ch;
+}
+
+.successSteps {
+  margin-top: 1.75rem;
+  border-top: 1px solid var(--line-dark);
+}
+
+.successStep {
+  display: grid;
+  grid-template-columns: minmax(7rem, 9rem) 1fr;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line-dark);
+  font-size: 0.95rem;
+}
+
+.successStep dt {
+  font-weight: 600;
+  color: var(--blueprint);
+}
+
+.successStep dd {
+  color: var(--graphite-soft);
+}
+
+.successActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1.75rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line-dark);
+}
+
+.note {
+  font-size: 0.85rem;
+  color: var(--graphite-soft);
+  margin-top: 1rem;
+}
+
+@media (max-width: 620px) {
+  .row,
+  .optionGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .successStep {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (pointer: coarse) {
+  .option,
+  .control {
+    min-height: 48px;
+  }
+
+  .check {
+    padding-block: 0.3rem;
+  }
+}
+
+/* A 360px una fila de resumen con valor largo se apretaba demasiado */
+@media (max-width: 420px) {
+  .successStep,
+  .rangeHead {
+    gap: 0.35rem;
+  }
+}
